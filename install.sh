@@ -32,6 +32,8 @@ export GUM_SPIN_SPINNER_FOREGROUND=10
 export GUM_SPIN_TITLE_FOREGROUND=15
 
 main() {
+	local archinstall_raw_content_url="https://raw.githubusercontent.com/d33trik/archinstall/main"
+
 	local keymap
 	local locale
 	local timezone
@@ -48,6 +50,7 @@ main() {
 
 	install_gum
 	show_installation_warning
+	download_resources
 	get_keyboard_layout
 	setup_keyboard_layout
 	get_locale
@@ -259,6 +262,14 @@ get_wipe_method() {
 			--header="Wipe Method" \
 			--placeholder="Select your preferred wipe method..."
 	)
+}
+
+download_resources() {
+	gum spin \
+		--title="Downloading resources..." \
+		-- bash -c "
+			curl -s \"$archinstall_raw_content_url/resources/mirrorlist_countries.txt\" > mirrorlist_countries.txt
+		"
 }
 
 main "$@"
