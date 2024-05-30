@@ -46,6 +46,7 @@ main() {
 	get_timezone
 	get_root_password
 	get_root_password_confirmation
+	validate_root_password
 }
 
 install_gum() {
@@ -136,6 +137,15 @@ get_root_password_confirmation() {
 			--header="Root Password Confirmation" \
 			--placeholder="Confirm your root password..."
 	)
+}
+
+validate_root_password() {
+	if [[ $root_password != $root_password_confirmation ]]; then
+		echo -e "$(gum style --bold --foreground="9" "ERROR:") Passwords do not match. Please try again."; sleep 2; clear
+		get_root_password
+		get_root_password_confirmation
+		validate_root_password
+	fi
 }
 
 main "$@"
