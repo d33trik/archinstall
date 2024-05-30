@@ -21,6 +21,12 @@ export GUM_FILTER_UNSELECTED_PREFIX=" - "
 export GUM_FILTER_UNSELECTED_PREFIX_FOREGROUND=9
 export GUM_FILTER_WIDTH=0
 
+export GUM_INPUT_CURSOR_FOREGROUND=7
+export GUM_INPUT_CURSOR_MODE=static
+export GUM_INPUT_PROMPT_FOREGROUND=10
+export GUM_INPUT_WIDTH=0
+export GUM_INPUT_HEADER_FOREGROUND=15
+
 export GUM_SPIN_SPINNER=line
 export GUM_SPIN_SPINNER_FOREGROUND=10
 export GUM_SPIN_TITLE_FOREGROUND=15
@@ -29,6 +35,7 @@ main() {
 	local keymap
 	local locale
 	local timezone
+	local root_password
 
 	install_gum
 	show_installation_warning
@@ -36,6 +43,7 @@ main() {
 	setup_keyboard_layout
 	get_locale
 	get_timezone
+	get_root_password
 }
 
 install_gum() {
@@ -107,6 +115,15 @@ get_timezone() {
 		gum filter \
 			--header="Timezone" \
 			--placeholder="Select your time zone..."
+	)
+}
+
+get_root_password() {
+	root_password=$(
+		gum input \
+			--password="true" \
+			--header="Root Password" \
+			--placeholder="Set a secure root password..."
 	)
 }
 
