@@ -28,12 +28,14 @@ export GUM_SPIN_TITLE_FOREGROUND=15
 main() {
 	local keymap
 	local locale
+	local timezone
 
 	install_gum
 	show_installation_warning
 	get_keyboard_layout
 	setup_keyboard_layout
 	get_locale
+	get_timezone
 }
 
 install_gum() {
@@ -96,6 +98,15 @@ get_locale() {
 		gum filter \
 			--header="Locale" \
 			--placeholder="Select your preferred locale..."
+	)
+}
+
+get_timezone() {
+	timezone=$(
+		timedatectl list-timezones |
+		gum filter \
+			--header="Timezone" \
+			--placeholder="Select your time zone..."
 	)
 }
 
