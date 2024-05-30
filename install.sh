@@ -36,6 +36,7 @@ main() {
 	local locale
 	local timezone
 	local root_password
+	local root_password_confirmation
 
 	install_gum
 	show_installation_warning
@@ -44,6 +45,7 @@ main() {
 	get_locale
 	get_timezone
 	get_root_password
+	get_root_password_confirmation
 }
 
 install_gum() {
@@ -124,6 +126,15 @@ get_root_password() {
 			--password="true" \
 			--header="Root Password" \
 			--placeholder="Set a secure root password..."
+	)
+}
+
+get_root_password_confirmation() {
+	root_password_confirmation=$(
+		gum input \
+			--password="true" \
+			--header="Root Password Confirmation" \
+			--placeholder="Confirm your root password..."
 	)
 }
 
