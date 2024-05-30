@@ -27,11 +27,13 @@ export GUM_SPIN_TITLE_FOREGROUND=15
 
 main() {
 	local keymap
+	local locale
 
 	install_gum
 	show_installation_warning
 	get_keyboard_layout
 	setup_keyboard_layout
+	get_locale
 }
 
 install_gum() {
@@ -86,6 +88,15 @@ setup_keyboard_layout() {
 			sleep 1
 			loadkeys \"$keymap\"
 		"
+}
+
+get_locale() {
+	locale=$(
+		cat /usr/share/i18n/SUPPORTED |
+		gum filter \
+			--header="Locale" \
+			--placeholder="Select your preferred locale..."
+	)
 }
 
 main "$@"
