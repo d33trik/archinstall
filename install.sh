@@ -21,12 +21,17 @@ export GUM_FILTER_UNSELECTED_PREFIX=" - "
 export GUM_FILTER_UNSELECTED_PREFIX_FOREGROUND=9
 export GUM_FILTER_WIDTH=0
 
+export GUM_SPIN_SPINNER=line
+export GUM_SPIN_SPINNER_FOREGROUND=10
+export GUM_SPIN_TITLE_FOREGROUND=15
+
 main() {
 	local keymap
 
 	install_gum
 	show_installation_warning
 	get_keyboard_layout
+	setup_keyboard_layout
 }
 
 install_gum() {
@@ -72,6 +77,15 @@ get_keyboard_layout() {
 			--header="Keyboard Layout" \
 			--placeholder="Select your keyboard layout..."
 	)
+}
+
+setup_keyboard_layout() {
+	gum spin \
+		--title="Setting up the keyboard layout..." \
+		-- bash -c "
+			sleep 1
+			loadkeys \"$keymap\"
+		"
 }
 
 main "$@"
