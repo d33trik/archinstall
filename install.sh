@@ -38,6 +38,7 @@ main() {
 	local root_password
 	local root_password_confirmation
 	local user_full_name
+	local user_username
 
 	install_gum
 	show_installation_warning
@@ -49,6 +50,7 @@ main() {
 	get_root_password_confirmation
 	validate_root_password
 	get_user_full_name
+	get_user_username
 }
 
 install_gum() {
@@ -155,6 +157,14 @@ get_user_full_name() {
 		gum input \
 			--header="User Full Name" \
 			--placeholder="Please enter your first and last name..."
+	)
+}
+
+get_user_username() {
+	user_username=$(
+		gum input \
+			--header="User Username" \
+			--placeholder="Create a username for your account...."
 	)
 }
 
