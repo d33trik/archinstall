@@ -105,6 +105,14 @@ show_installation_warning() {
 		"$prompt"
 }
 
+download_resources() {
+	gum spin \
+		--title="Downloading resources..." \
+		-- bash -c "
+			curl -s \"$archinstall_raw_content_url/resources/mirrorlist_countries.txt\" > mirrorlist_countries.txt
+		"
+}
+
 get_keyboard_layout() {
 	keymap=$(
 		localectl list-keymaps |
@@ -262,14 +270,6 @@ get_wipe_method() {
 			--header="Wipe Method" \
 			--placeholder="Select your preferred wipe method..."
 	)
-}
-
-download_resources() {
-	gum spin \
-		--title="Downloading resources..." \
-		-- bash -c "
-			curl -s \"$archinstall_raw_content_url/resources/mirrorlist_countries.txt\" > mirrorlist_countries.txt
-		"
 }
 
 main "$@"
