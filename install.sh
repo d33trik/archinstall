@@ -37,6 +37,7 @@ main() {
 	local timezone
 	local root_password
 	local root_password_confirmation
+	local user_full_name
 
 	install_gum
 	show_installation_warning
@@ -47,6 +48,7 @@ main() {
 	get_root_password
 	get_root_password_confirmation
 	validate_root_password
+	get_user_full_name
 }
 
 install_gum() {
@@ -146,6 +148,14 @@ validate_root_password() {
 		get_root_password_confirmation
 		validate_root_password
 	fi
+}
+
+get_user_full_name() {
+	user_full_name=$(
+		gum input \
+			--header="User Full Name" \
+			--placeholder="Please enter your first and last name..."
+	)
 }
 
 main "$@"
