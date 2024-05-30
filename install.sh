@@ -42,6 +42,7 @@ main() {
 	local user_password
 	local user_password_confirmation
 	local hostname
+	local block_device
 
 	install_gum
 	show_installation_warning
@@ -58,6 +59,7 @@ main() {
 	get_user_password_confirmation
 	validate_user_password
 	get_hostname
+	get_block_device
 }
 
 install_gum() {
@@ -207,6 +209,24 @@ get_hostname() {
         gum input \
             --header="Hostname" \
             --placeholder="Enter a hostname for your system...."
+    )
+}
+
+get_block_device() {
+    block_device=$(
+        lsblk \
+            --noheadings \
+            --nodeps \
+            --paths \
+            --output NAME,SIZE |
+        gum filter \
+            --header="Block Device" \
+            --placeholder="Select the block device where you want to install the system..."
+    )
+
+     block_device=$(
+        echo $block_device |
+        awk '{print $1}'
     )
 }
 
