@@ -55,6 +55,7 @@ main() {
 	get_user_username
 	get_user_password
 	get_user_password_confirmation
+	validate_user_password
 }
 
 install_gum() {
@@ -188,6 +189,15 @@ get_user_password_confirmation() {
 			--header="User Password Confirmation" \
 			--placeholder="Confirm your password..."
 	)
+}
+
+validate_user_password() {
+    if [[ $user_password != $user_password_confirmation ]]; then
+        echo -e "$(gum style --bold --foreground="9" "ERROR:") Passwords do not match. Please try again."; sleep 2; clear
+        get_user_password
+        get_user_password_confirmation
+        validate_user_password
+    fi
 }
 
 main "$@"
