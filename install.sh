@@ -10,9 +10,23 @@ export GUM_CONFIRM_SELECTED_FOREGROUND=0
 export GUM_CONFIRM_UNSELECTED_BACKGROUND=0
 export GUM_CONFIRM_UNSELECTED_FOREGROUND=7
 
+export GUM_FILTER_CURSOR_TEXT_FOREGROUND=10
+export GUM_FILTER_HEADER_FOREGROUND=15
+export GUM_FILTER_INDICATOR_FOREGROUND=10
+export GUM_FILTER_MATCH_FOREGROUND=10
+export GUM_FILTER_PROMPT_FOREGROUND=10
+export GUM_FILTER_SELECTED_PREFIX=" + "
+export GUM_FILTER_SELECTED_PREFIX_FOREGROUND=10
+export GUM_FILTER_UNSELECTED_PREFIX=" - "
+export GUM_FILTER_UNSELECTED_PREFIX_FOREGROUND=9
+export GUM_FILTER_WIDTH=0
+
 main() {
+	local keymap
+
 	install_gum
 	show_installation_warning
+	get_keyboard_layout
 }
 
 install_gum() {
@@ -49,6 +63,15 @@ show_installation_warning() {
 	gum confirm \
 		--default="false" \
 		"$prompt"
+}
+
+get_keyboard_layout() {
+	keymap=$(
+		localectl list-keymaps |
+		gum filter \
+			--header="Keyboard Layout" \
+			--placeholder="Select your keyboard layout..."
+	)
 }
 
 main "$@"
