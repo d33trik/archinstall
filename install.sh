@@ -47,6 +47,7 @@ main() {
 	local block_device
 	local swap_size
 	local wipe_method
+	local mirrorlist_country
 
 	install_gum
 	show_installation_warning
@@ -67,6 +68,7 @@ main() {
 	get_block_device
 	get_swap_size
 	get_wipe_method
+	get_mirrorlist_country
 }
 
 install_gum() {
@@ -269,6 +271,17 @@ get_wipe_method() {
 		gum filter \
 			--header="Wipe Method" \
 			--placeholder="Select your preferred wipe method..."
+	)
+}
+
+get_mirrorlist_country() {
+	local countries=$(cat "mirrorlist_countries.txt")
+
+	mirrorlist_country=$(
+		echo "$countries" |
+		gum filter \
+			--header="Pacman Mirrorlist" \
+			--placeholder="Select the country closest to your location..."
 	)
 }
 
