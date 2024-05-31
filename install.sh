@@ -85,6 +85,7 @@ main() {
 	get_packages_to_install
 	show_isntallation_summary
 	verify_boot_mode
+	update_system_clock
 }
 
 install_gum() {
@@ -374,6 +375,15 @@ verify_boot_mode() {
 		boot_mode=0
 		boot_partition_type=4
 	fi
+}
+
+update_system_clock() {
+	gum spin \
+		--title="Updating system clock..." \
+		-- bash -c "
+			sleep 1
+			timedatectl set-ntp true
+		"
 }
 
 main "$@"
