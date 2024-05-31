@@ -89,6 +89,7 @@ main() {
 	wipe_block_device
 	partition_block_device
 	format_partitions
+	mount_filesystems
 }
 
 install_gum() {
@@ -452,6 +453,17 @@ format_partitions() {
 			[[ \"$boot_mode\" == 1 ]] && mkfs.fat -F32 \"${block_device}1\"
 			mkswap \"${block_device}2\"
 			mkfs.ext4 \"${block_device}3\"
+		"
+}
+
+mount_filesystems() {
+	gum spin \
+		--title="Mounting filesystems..." \
+		-- bash -c "
+			sleep 1
+			mount \"${block_device}3\" /mnt
+			swapon \"${block_device}2\"
+			[[ \"$boot_mode\" == 1 ]] && mkdir -p /mnt/boot && mount \"${block_device}\"1 /mnt/boot
 		"
 }
 
