@@ -75,6 +75,15 @@ main() {
 				;;
 		esac
 	done
+
+	install_gum
+}
+
+install_gum() {
+	clear
+	echo "Installing gum..."
+	pacman -Syu --noconfirm --needed gum &> /dev/null
+	clear
 }
 
 main "$@"
