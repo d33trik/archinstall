@@ -91,6 +91,7 @@ main() {
 	format_partitions
 	mount_filesystems
 	uptate_pacman_mirrorlist
+	install_essential_packages
 }
 
 install_gum() {
@@ -482,6 +483,14 @@ uptate_pacman_mirrorlist() {
 			rankmirrors -n 5 /etc/pacman.d/mirrorlist.unranked > /etc/pacman.d/mirrorlist &&
 			rm /etc/pacman.d/mirrorlist.unranked
 		"
+}
+
+install_essential_packages() {
+	echo "$(gum style --foreground="15" "Instaling essential packages...")"
+	sleep 1
+	pacstrap -K /mnt base base-devel linux linux-firmware
+	sleep 1
+	clear
 }
 
 main "$@"
