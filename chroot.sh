@@ -81,6 +81,7 @@ main() {
 	setup_user_account
 	setup_timezone
 	setup_localization
+	setup_graphical_interface
 }
 
 install_gum() {
@@ -132,6 +133,24 @@ setup_localization() {
 			locale-gen
 			echo \"LANG=$locale_prefix\" > /etc/locale.conf
 			echo \"KEYMAP=$keymap\" >> /etc/vconsole.conf
+		"
+}
+
+setup_graphical_interface() {
+	gum spin \
+		--title="Setting up the graphical interface..." \
+		-- bash -c "
+			pacman -S --noconfirm xorg xorg-xinit i3-wm i3status arandr dmenu
+			echo \"exec i3\" > /home/\"$user_username\"/.xinitrc
+			chown \"$user_username\":wheel /home/\"$user_username\"/.xinitrc
+			mkdir -p /etc/X11/xorg.conf.d
+			cat <<EOF > /etc/X11/xorg.conf.d/00-keyboard.conf
+Section \"InputClass\"
+	Identifier \"system-keyboard\"
+	MatchIsKeyboard \"on\"
+	Option \"XkbLayout\" \"us\"
+EndSection
+EOF
 		"
 }
 
