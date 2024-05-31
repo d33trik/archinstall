@@ -78,6 +78,7 @@ main() {
 
 	install_gum
 	setup_root_password
+	setup_user_account
 }
 
 install_gum() {
@@ -93,6 +94,17 @@ setup_root_password() {
         -- bash -c "
             sleep 1
             echo \"root:$root_password\" | chpasswd
+        "
+}
+
+setup_user_account() {
+    gum spin \
+        --title="Setting up the user account..." \
+        -- bash -c "
+            sleep 1
+            useradd -m -g wheel -s /bin/bash -c \"$user_full_name\" \"$user_username\"
+            echo \"$user_username:$user_password\" | chpasswd
+            echo \"%wheel ALL=(ALL) ALL\" >> /etc/sudoers
         "
 }
 
