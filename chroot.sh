@@ -77,6 +77,7 @@ main() {
 	done
 
 	install_gum
+	setup_root_password
 }
 
 install_gum() {
@@ -84,6 +85,15 @@ install_gum() {
 	echo "Installing gum..."
 	pacman -Syu --noconfirm --needed gum &> /dev/null
 	clear
+}
+
+setup_root_password() {
+    gum spin \
+        --title="Setting up the root password..." \
+        -- bash -c "
+            sleep 1
+            echo \"root:$root_password\" | chpasswd
+        "
 }
 
 main "$@"
