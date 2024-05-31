@@ -83,6 +83,7 @@ main() {
 	setup_localization
 	setup_graphical_interface
 	setup_audio_interface
+	setup_network_interface
 }
 
 install_gum() {
@@ -168,6 +169,19 @@ set-default-sink echoCancel_sink
 EOF
 			pulseaudio -k
 			pulseaudio --start
+		"
+}
+
+setup_network_interface() {
+	gum spin \
+		--title="Setting up the network interface..." \
+		-- bash -c "
+			echo \"$hostname\" > /etc/hostname
+			yes | pacman -S networkmanager iptables-nft ufw gufw
+			systemctl enable NetworkManager.service 
+			systemctl enable ufw.service
+			systemctl start ufw.service
+			ufw enable
 		"
 }
 
