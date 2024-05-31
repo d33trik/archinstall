@@ -79,6 +79,7 @@ main() {
 	install_gum
 	setup_root_password
 	setup_user_account
+	setup_timezone
 }
 
 install_gum() {
@@ -105,6 +106,17 @@ setup_user_account() {
 			useradd -m -g wheel -s /bin/bash -c \"$user_full_name\" \"$user_username\"
 			echo \"$user_username:$user_password\" | chpasswd
 			echo \"%wheel ALL=(ALL) ALL\" >> /etc/sudoers
+		"
+}
+
+setup_timezone() {
+	gum spin \
+		--title="Setting up the timezone..." \
+		-- bash -c "
+			sleep 1
+			ln -sf /usr/share/zoneinfo/\"$timezone\" /etc/localtime
+			timedatectl set-ntp true
+			hwclock --systohc
 		"
 }
 
