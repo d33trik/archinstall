@@ -59,6 +59,8 @@ main() {
 	local mirrorlist_country
 	local packages_to_install
 	local formatted_packages_to_install
+	local boot_mode
+	local boot_partition_type
 
 	install_gum
 	show_installation_warning
@@ -82,6 +84,7 @@ main() {
 	get_mirrorlist_country
 	get_packages_to_install
 	show_isntallation_summary
+	verify_boot_mode
 }
 
 install_gum() {
@@ -357,6 +360,20 @@ show_isntallation_summary() {
         --affirmative="Yes, Install" \
         --negative="No, Edit" \
         "$prompt"
+}
+
+verify_boot_mode() {
+	gum spin \
+		--title="Verifying boot mode..." \
+		-- sleep 1
+
+	if cat /sys/firmware/efi/fw_platform_size &> /dev/null; then
+		boot_mode=1
+		boot_partition_type=1
+	else
+		boot_mode=0
+		boot_partition_type=4
+	fi
 }
 
 main "$@"
