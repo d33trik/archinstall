@@ -112,6 +112,7 @@ download_resources() {
 		--title="Downloading resources..." \
 		-- bash -c "
 			curl -s \"$archinstall_raw_content_url/resources/mirrorlist_countries.txt\" > mirrorlist_countries.txt
+			curl -s \"$archinstall_raw_content_url/resources/packages.csv\" > packages.csv
 		"
 }
 
