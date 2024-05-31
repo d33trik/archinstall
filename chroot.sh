@@ -80,6 +80,7 @@ main() {
 	setup_root_password
 	setup_user_account
 	setup_timezone
+	setup_localization
 }
 
 install_gum() {
@@ -117,6 +118,20 @@ setup_timezone() {
 			ln -sf /usr/share/zoneinfo/\"$timezone\" /etc/localtime
 			timedatectl set-ntp true
 			hwclock --systohc
+		"
+}
+
+setup_localization() {
+	local locale_prefix=$(echo $locale | awk '{print $1}')
+
+	gum spin \
+		--title="Setting up the localization..." \
+		-- bash -c "
+			sleep 1
+			echo \"$locale\" >> /etc/locale.gen
+			locale-gen
+			echo \"LANG=$locale_prefix\" > /etc/locale.conf
+			echo \"KEYMAP=$keymap\" >> /etc/vconsole.conf
 		"
 }
 
