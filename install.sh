@@ -5,6 +5,15 @@
 # o pipefail - script fails if command piped fails
 set -euo pipefail
 
+export GUM_CHOOSE_CURSOR_PREFIX="[ ] "
+export GUM_CHOOSE_CURSOR_FOREGROUND=10
+export GUM_CHOOSE_HEADER_FOREGROUND=15
+export GUM_CHOOSE_HEIGHT=50
+export GUM_CHOOSE_ITEM_FOREGROUND=9
+export GUM_CHOOSE_SELECTED_PREFIX="[X] "
+export GUM_CHOOSE_SELECTED_FOREGROUND=10
+export GUM_CHOOSE_UNSELECTED_PREFIX="[ ] "
+
 export GUM_CONFIRM_SELECTED_BACKGROUND=7
 export GUM_CONFIRM_SELECTED_FOREGROUND=0
 export GUM_CONFIRM_UNSELECTED_BACKGROUND=0
@@ -15,9 +24,9 @@ export GUM_FILTER_HEADER_FOREGROUND=15
 export GUM_FILTER_INDICATOR_FOREGROUND=10
 export GUM_FILTER_MATCH_FOREGROUND=10
 export GUM_FILTER_PROMPT_FOREGROUND=10
-export GUM_FILTER_SELECTED_PREFIX=" + "
+export GUM_FILTER_SELECTED_PREFIX=" [X] "
 export GUM_FILTER_SELECTED_PREFIX_FOREGROUND=10
-export GUM_FILTER_UNSELECTED_PREFIX=" - "
+export GUM_FILTER_UNSELECTED_PREFIX=" [ ] "
 export GUM_FILTER_UNSELECTED_PREFIX_FOREGROUND=9
 export GUM_FILTER_WIDTH=0
 
@@ -48,6 +57,8 @@ main() {
 	local swap_size
 	local wipe_method
 	local mirrorlist_country
+	local packages_to_install
+	local formatted_packages_to_install
 
 	install_gum
 	show_installation_warning
@@ -69,6 +80,7 @@ main() {
 	get_swap_size
 	get_wipe_method
 	get_mirrorlist_country
+	get_packages_to_install
 }
 
 install_gum() {
@@ -284,6 +296,26 @@ get_mirrorlist_country() {
 			--header="Pacman Mirrorlist" \
 			--placeholder="Select the country closest to your location..."
 	)
+}
+
+get_packages_to_install() {
+    local package_list=$(awk -F, 'NR > 1 {print $1}' "packages.csv" | sort | uniq)
+    local pre_selected_packages_list=$(grep "true" "packages.csv" | awk -F, '{print $1}' | sort | uniq)
+
+    local pre_selected_packages=()
+    for pre_selected_package in $pre_selected_packages_list; do
+        pre_selected_packages+=("--selected=$pre_selected_package")
+    done
+
+    packages_to_install=$(
+        echo "$package_list" |
+        gum choose \
+            --no-limit \
+            --header="Select the packages you want to install..." \
+            "${pre_selected_packages[@]}"
+    )
+
+    formatted_packages_to_install=$(echo $packages_to_install | sed 's/ /, /g')
 }
 
 main "$@"
