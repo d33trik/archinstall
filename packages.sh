@@ -100,4 +100,12 @@ install_pakage_with_pacman() {
 		"
 }
 
+install_pakage_with_yay() {
+	gum spin \
+		--title="[$index/$total] Installing $package_name..." \
+		-- bash -c "
+			yay -S --noconfirm --needed \"$package_name\"
+		"
+}
+
 main "$@"
