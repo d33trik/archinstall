@@ -34,6 +34,7 @@ main() {
 	enable_sudo_execution_without_password
 	install_yay
 	install_fonts
+	install_packages
 }
 
 enable_sudo_execution_without_password() {
@@ -65,6 +66,30 @@ install_fonts() {
 	-- bash -c "
 		pacman -S --noconfirm --needed ttf-dejavu ttc-iosevka otf-monaspace ttf-monaspace-variable
 	"
+}
+
+install_packages() {
+	local packages=$(grep -E "$packages_to_install" "packages.csv")
+	local total=$(echo "$packages" | wc -l)
+	local index=0
+
+	echo "$packages" | while read -r package; do
+		local package_name=$(echo "$package" | awk -F, {'print $2'})
+		local installation_method=$(echo "$package" | awk -F, {'print $3'})
+		index=$(( "$index" + 1 ))
+
+		case $installation_method in
+			pacman)
+				install_pakage_with_pacman
+				;;
+			aur)
+				install_pakage_with_yay
+				;;
+			custom)
+				custom_package_install
+				;;
+		esac
+	done
 }
 
 main "$@"
