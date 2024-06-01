@@ -141,4 +141,13 @@ install_beekeeper_studio() {
 		"
 }
 
+install_docker() {
+	gum spin \
+		--title="[$index/$total] Installing $package_name..." \
+		-- bash -c "
+			pacman -S --noconfirm --needed docker docker-compose
+			systemctl enable docker.socket
+		"
+}
+
 main "$@"
