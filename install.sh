@@ -137,6 +137,7 @@ download_resources() {
 		--title="Downloading resources..." \
 		-- bash -c "
 			curl -s \"$archinstall_raw_content_url/chroot.sh\" > chroot.sh
+			curl -s \"$archinstall_raw_content_url/packages.sh\" > packages.sh
 			curl -s \"$archinstall_raw_content_url/resources/mirrorlist_countries.txt\" > mirrorlist_countries.txt
 			curl -s \"$archinstall_raw_content_url/resources/packages.csv\" > packages.csv
 		"
@@ -507,6 +508,7 @@ generate_fstab() {
 
 run_arch_chroot_script() {
 	mv chroot.sh /mnt/chroot.sh
+	mv packages.sh /mnt/packages.sh
 	mv packages.csv /mnt/packages.csv
 
 	arch-chroot /mnt bash chroot.sh \

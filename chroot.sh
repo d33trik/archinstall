@@ -85,6 +85,7 @@ main() {
 	setup_audio_interface
 	setup_network_interface
 	setup_bootloader
+	install_packages
 }
 
 install_gum() {
@@ -199,6 +200,12 @@ setup_bootloader() {
 			fi
 			grub-mkconfig -o /boot/grub/grub.cfg
 		"
+}
+
+install_packages() {
+	bash packages.sh \
+		--packages-to-install "$packages_to_install" \
+		--user-username "$user_username"
 }
 
 main "$@"
