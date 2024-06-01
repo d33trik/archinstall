@@ -109,23 +109,36 @@ install_pakage_with_yay() {
 }
 
 custom_package_install() {
-    case $package_name in
-        beekeeper-studio)
-            install_beekeeper_studio
-            ;;
-        docker)
-            install_docker
-            ;;
-        nodejs)
-            install_nodejs
-            ;;
-        obsidian)
-            install_obsidian
-            ;;
-        virtualization)
-            install_virtualization
-            ;;
-    esac
+	case $package_name in
+		beekeeper-studio)
+			install_beekeeper_studio
+			;;
+		docker)
+			install_docker
+			;;
+		nodejs)
+			install_nodejs
+			;;
+		obsidian)
+			install_obsidian
+			;;
+		virtualization)
+			install_virtualization
+			;;
+	esac
+}
+
+install_beekeeper_studio() {
+	gum spin \
+		--title="[$index/$total] Installing $package_name..." \
+		-- bash -c "
+			pacman -S --noconfirm --needed fuse2
+			curl -sLo beekeeper-studio.AppImage $(curl -s https://api.github.com/repos/beekeeper-studio/beekeeper-studio/releases/latest | grep browser_download_url.*AppImage | grep -v "arm64" | cut -d\" -f4)
+			mkdir /opt/beekeeper-studio
+			mv beekeeper-studio.AppImage /opt/beekeeper-studio
+			chmod +x /opt/beekeeper-studio/beekeeper-studio.AppImage
+			ln -s /opt/beekeeper-studio/beekeeper-studio.AppImage /usr/bin/beekeeper-studio
+		"
 }
 
 main "$@"
