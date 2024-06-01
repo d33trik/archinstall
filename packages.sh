@@ -190,4 +190,14 @@ install_obsidian() {
 		"
 }
 
+install_virtualization() {
+	gum spin \
+		--title="[$index/$total] Installing $package_name..." \
+		-- bash -c "
+			pacman -S --noconfirm --needed qemu-full libvirt virt-manager iptables-nft dnsmasq dmidecode edk2-ovmf
+			gpasswd -a \"$user_username\" libvirt
+			systemctl enable libvirtd.socket
+		"
+}
+
 main "$@"
