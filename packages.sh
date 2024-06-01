@@ -128,6 +128,17 @@ custom_package_install() {
 	esac
 }
 
+install_asdf() {
+	gum spin \
+		--title="[$index/$total] Installing $package_name..." \
+		-- sudo -u "$user_username" bash -c "
+			sudo pacman -S --noconfirm --needed curl git
+			git clone https://github.com/asdf-vm/asdf.git \"/home/$user_username/.asdf\" --branch v0.14.0
+			echo '. \"/home/$user_username/.asdf/asdf.sh\"' >> \"/home/$user_username/.bashrc\"
+			echo '. \"/home/$user_username/.asdf/completions/asdf.bash\"' >> \"/home/$user_username/.bashrc\"
+		"
+}
+
 install_beekeeper_studio() {
 	gum spin \
 		--title="[$index/$total] Installing $package_name..." \
@@ -147,6 +158,22 @@ install_docker() {
 		-- bash -c "
 			pacman -S --noconfirm --needed docker docker-compose
 			systemctl enable docker.socket
+		"
+}
+
+install_nodejs() {
+	if [ ! -e "/home/$user_username/.asdf/asdf.sh" ]; then
+		install_asdf
+	fi
+
+	gum spin \
+		--title="[$index/$total] Installing $package_name..." \
+		-- sudo -u "$user_username" bash -c "
+			source \"/home/$user_username/.asdf/asdf.sh\"
+			asdf plugin add nodejs
+			asdf nodejs update-nodebuild
+			asdf install nodejs \$(asdf nodejs resolve lts --latest-available)
+			asdf global nodejs \$(asdf nodejs resolve lts --latest-available)
 		"
 }
 

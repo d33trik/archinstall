@@ -9,7 +9,7 @@ gimp,gimp,pacman,false
 git,git,pacman,true
 klavaro,klavaro,pacman,false
 neovim,neovim,pacman,true
-nodejs (asdf),nodejs,custom,false
+nodejs,nodejs,custom,false
 obsidian,obsidian,custom,false
 remmina,remmina,pacman,false
 remmina,freerdp,pacman,false
