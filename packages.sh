@@ -108,4 +108,24 @@ install_pakage_with_yay() {
 		"
 }
 
+custom_package_install() {
+    case $package_name in
+        beekeeper-studio)
+            install_beekeeper_studio
+            ;;
+        docker)
+            install_docker
+            ;;
+        nodejs)
+            install_nodejs
+            ;;
+        obsidian)
+            install_obsidian
+            ;;
+        virtualization)
+            install_virtualization
+            ;;
+    esac
+}
+
 main "$@"

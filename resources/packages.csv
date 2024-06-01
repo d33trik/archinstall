@@ -1,6 +1,5 @@
 Group,Package,Installation Method,Pre Selected
 alacritty,alacritty,pacman,true
-asdf,asdf,custom,true
 beekeeper-studio,beekeeper-studio,custom,false
 chromium,chromium,pacman,false
 code,code,pacman,false
@@ -10,7 +9,7 @@ gimp,gimp,pacman,false
 git,git,pacman,true
 klavaro,klavaro,pacman,false
 neovim,neovim,pacman,true
-nodejs,nodejs,custom,false
+nodejs (asdf),nodejs,custom,false
 obsidian,obsidian,custom,false
 remmina,remmina,pacman,false
 remmina,freerdp,pacman,false
