@@ -92,4 +92,12 @@ install_packages() {
 	done
 }
 
+install_pakage_with_pacman() {
+	gum spin \
+		--title="[$index/$total] Installing $package_name..." \
+		-- bash -c "
+			pacman -S --noconfirm --needed \"$package_name\"
+		"
+}
+
 main "$@"
