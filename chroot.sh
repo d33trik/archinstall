@@ -13,6 +13,7 @@ export GUM_SPIN_TITLE_FOREGROUND=15
 main() {
 	local block_device
 	local boot_mode
+	local dotfiles
 	local hostname
 	local keymap
 	local locale
@@ -31,6 +32,10 @@ main() {
 				;;
 			--boot-mode)
 				boot_mode="$2"
+				shift 2
+				;;
+			--dotfiles)
+				dotfiles="$2"
 				shift 2
 				;;
 			--hostname)
@@ -204,6 +209,7 @@ setup_bootloader() {
 
 install_packages() {
 	bash packages.sh \
+		--dotfiles "$dotfiles" \
 		--packages-to-install "$packages_to_install" \
 		--user-username "$user_username"
 }

@@ -11,11 +11,18 @@ export GUM_SPIN_SPINNER_FOREGROUND=10
 export GUM_SPIN_TITLE_FOREGROUND=15
 
 main() {
+	local dotfiles_url="https://github.com/d33trik/dotfiles.git"
+
+	local dotfiles
 	local packages_to_install
 	local user_username
 
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
+			--dotfiles)
+				dotfiles="$2"
+				shift 2
+				;;
 			--packages-to-install)
 				packages_to_install="$2"
 				shift 2
@@ -35,6 +42,7 @@ main() {
 	install_yay
 	install_fonts
 	install_packages
+	install_dotfiles
 }
 
 enable_sudo_execution_without_password() {
@@ -198,6 +206,19 @@ install_virtualization() {
 			gpasswd -a \"$user_username\" libvirt
 			systemctl enable libvirtd.socket
 		"
+}
+
+install_dotfiles() {
+	if [ "$dotfiles" = "Yes" ]; then
+		gum spin \
+			--title="Installing dotfiles..." \
+			-- sudo -u "$user_username" bash -c "
+				sudo pacman -S --noconfirm --needed git
+				git clone \"$dotfiles_url\" \"/home/$user_username/dotfiles\"
+				cd \"/home/$user_username/dotfiles\"
+				bash install.sh
+			"
+	fi
 }
 
 main "$@"

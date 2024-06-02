@@ -59,6 +59,7 @@ main() {
 	local mirrorlist_country
 	local packages_to_install
 	local formatted_packages_to_install
+	local dotfiles
 	local boot_mode
 	local boot_partition_type
 
@@ -83,6 +84,7 @@ main() {
 	get_wipe_method
 	get_mirrorlist_country
 	get_packages_to_install
+	get_install_dotfiles
 	show_isntallation_summary
 	verify_boot_mode
 	update_system_clock
@@ -333,44 +335,55 @@ get_packages_to_install() {
     formatted_packages_to_install=$(echo $packages_to_install | sed 's/ /, /g')
 }
 
-show_isntallation_summary() {
-    local prompt=$(
-        gum format \
-            --type="markdown" -- \
-            "$(gum style --bold --foreground="10" "Ready to Install?")" \
-            "" \
-            "Here's a quick overview of your Arch Linux setup:" \
-            "" \
-            "$(gum style --bold --foreground="10" "[User]")" \
-            "Name:                 $user_full_name" \
-            "Username:             $user_username" \
-            "" \
-            "$(gum style --bold --foreground="10" "[System]")" \
-            "Locale:               $locale" \
-            "Timezone:             $timezone" \
-            "Keyboard Layout:      $keymap" \
-            "Hostname:             $hostname" \
-            "Mirrorlist Country:   $mirrorlist_country" \
-            "" \
-            "$(gum style --bold --foreground="10" "[Instalation]")" \
-            "Block Device:         $block_device" \
-            "SWAP Size:            $swap_size GB" \
-            "Whipe Method:         $wipe_method" \
-            "" \
-            "$(gum style --bold --foreground="10" "[Packages]")" \
-            "$(gum style --width="65" "$formatted_packages_to_install")" |
-        gum style \
-            --border="normal" \
-            --margin="1" \
-            --padding="1 2" \
-            --border-foreground="7"
-    )
+get_install_dotfiles() {
+	dotfiles=$(
+		gum choose \
+			--header="Install dotfiles?" \
+			--height=4 \
+			--selected="No" \
+			"Yes" "No"
+	)
+}
 
-    gum confirm \
-        --default="false" \
-        --affirmative="Yes, Install" \
-        --negative="No, Edit" \
-        "$prompt"
+show_isntallation_summary() {
+	local prompt=$(
+		gum format \
+			--type="markdown" -- \
+			"$(gum style --bold --foreground="10" "Ready to Install?")" \
+			"" \
+			"Here's a quick overview of your Arch Linux setup:" \
+			"" \
+			"$(gum style --bold --foreground="10" "[User]")" \
+			"Name:                 $user_full_name" \
+			"Username:             $user_username" \
+			"" \
+			"$(gum style --bold --foreground="10" "[System]")" \
+			"Locale:               $locale" \
+			"Timezone:             $timezone" \
+			"Keyboard Layout:      $keymap" \
+			"Hostname:             $hostname" \
+			"Mirrorlist Country:   $mirrorlist_country" \
+			"" \
+			"$(gum style --bold --foreground="10" "[Instalation]")" \
+			"Block Device:         $block_device" \
+			"SWAP Size:            $swap_size GB" \
+			"Whipe Method:         $wipe_method" \
+			"" \
+			"$(gum style --bold --foreground="10" "[Packages]")" \
+			"Install dotfiles?     $dotfiles" \
+			"$(gum style --width="65" "$formatted_packages_to_install")" |
+		gum style \
+			--border="normal" \
+			--margin="1" \
+			--padding="1 2" \
+			--border-foreground="7"
+	)
+
+	gum confirm \
+		--default="false" \
+		--affirmative="Yes, Install" \
+		--negative="No, Edit" \
+		"$prompt"
 }
 
 verify_boot_mode() {
@@ -514,6 +527,7 @@ run_arch_chroot_script() {
 	arch-chroot /mnt bash chroot.sh \
 		--block-device "$block_device" \
 		--boot-mode "$boot_mode" \
+		--dotfiles "$dotfiles" \
 		--hostname "$hostname" \
 		--keymap "$keymap" \
 		--locale "$locale" \
