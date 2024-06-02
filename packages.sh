@@ -43,6 +43,7 @@ main() {
 	install_fonts
 	install_packages
 	install_dotfiles
+	disable_sudo_execution_without_password
 }
 
 enable_sudo_execution_without_password() {
@@ -219,6 +220,16 @@ install_dotfiles() {
 				bash install.sh
 			"
 	fi
+}
+
+disable_sudo_execution_without_password() {
+	gum spin \
+		--title="Disabling sudo execution without a password..." \
+		-- bash -c "
+			sleep 1
+			sed -i '/^# %wheel ALL=(ALL:ALL) ALL/s/^# //' /etc/sudoers
+			sed -i '/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/s/^/# /' /etc/sudoers
+		"
 }
 
 main "$@"
