@@ -98,6 +98,7 @@ main() {
 	run_arch_chroot_script
 	clean_installation_files
 	show_installation_completed_message
+	reboot_the_system
 }
 
 install_gum() {
@@ -579,6 +580,10 @@ show_installation_completed_message() {
 	gum confirm \
 		--default="false" \
 		"$prompt"
+}
+
+reboot_the_system() {
+	reboot
 }
 
 main "$@"
