@@ -96,6 +96,7 @@ main() {
 	install_essential_packages
 	generate_fstab
 	run_arch_chroot_script
+	clean_installation_files
 }
 
 install_gum() {
@@ -537,6 +538,17 @@ run_arch_chroot_script() {
 		--user-full-name "$user_full_name" \
 		--user-password "$user_password" \
 		--user-username "$user_username"
+}
+
+clean_installation_files() {
+	gum spin \
+		--title="Cleaning the installation files..." \
+		-- bash -c "
+			sleep 1
+			rm /mnt/chroot.sh
+			rm /mnt/packages.sh
+			rm /mnt/packages.csv
+		"
 }
 
 main "$@"
