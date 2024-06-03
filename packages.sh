@@ -73,7 +73,7 @@ install_fonts() {
 	gum spin \
 	--title="Installing some fonts..." \
 	-- bash -c "
-		pacman -S --noconfirm --needed ttf-dejavu ttc-iosevka otf-monaspace ttf-monaspace-variable
+		pacman -S --noconfirm --needed ttf-dejavu ttc-iosevka otf-monaspace ttf-monaspace-variable adobe-source-code-pro-fonts
 	"
 }
 
