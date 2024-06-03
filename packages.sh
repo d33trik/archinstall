@@ -217,6 +217,7 @@ install_dotfiles() {
 				sudo pacman -S --noconfirm --needed git
 				git clone \"$dotfiles_url\" \"/home/$user_username/dotfiles\"
 				cd \"/home/$user_username/dotfiles\"
+				chmod u+x install.sh
 				bash install.sh
 			"
 	fi
