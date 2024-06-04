@@ -167,8 +167,8 @@ install_beekeeper_studio() {
 install_breeze() {
 	gum spin \
 		--title="[$index/$total] Installing $package_name..." \
-		-- bash -c "
-			pacman -S --noconfirm --needed breeze
+		-- sudo -u "$user_username" bash -c "
+			sudo pacman -S --noconfirm --needed breeze
 			mkdir -p \"/home/$user_username/.local/share/icons/default\"
 			echo \"[Icon Theme]\" > \"/home/$user_username/.local/share/icons/default/index.theme\"
 			echo \"Inherits=breeze_cursors\" >> \"/home/$user_username/.local/share/icons/default/index.theme\"
@@ -176,8 +176,8 @@ install_breeze() {
 			echo \"[Icon Theme]\" > \"/home/$user_username/.icons/default/index.theme\"
 			echo \"Inherits=breeze_cursors\" >> \"/home/$user_username/.icons/default/index.theme\"
 			sudo mkdir -p \"/usr/share/icons/default\"
-			echo \"[Icon Theme]\" > \"/usr/share/icons/default/index.theme\"
-			echo \"Inherits=breeze_cursors\" >> \"/usr/share/icons/default/index.theme\"
+			sudo echo \"[Icon Theme]\" > \"/usr/share/icons/default/index.theme\"
+			sudo echo \"Inherits=breeze_cursors\" >> \"/usr/share/icons/default/index.theme\"
 			echo \"Xcursor.theme: breeze_cursors\" >> \"/home/$user_username/.Xresources\"
 			sed -i \"/^exec i3/i xrdb -merge ~/.Xresources\" \"/home/$user_username/.xinitrc\"
 		"
