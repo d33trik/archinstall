@@ -122,6 +122,9 @@ custom_package_install() {
 		beekeeper-studio)
 			install_beekeeper_studio
 			;;
+		breeze)
+			install_breeze
+			;;
 		docker)
 			install_docker
 			;;
@@ -158,6 +161,25 @@ install_beekeeper_studio() {
 			mv beekeeper-studio.AppImage /opt/beekeeper-studio
 			chmod +x /opt/beekeeper-studio/beekeeper-studio.AppImage
 			ln -s /opt/beekeeper-studio/beekeeper-studio.AppImage /usr/bin/beekeeper-studio
+		"
+}
+
+install_breeze() {
+	gum spin \
+		--title="[$index/$total] Installing $package_name..." \
+		-- bash -c "
+			pacman -S --noconfirm --needed breeze
+			mkdir -p \"/home/$user_username/.local/share/icons/default\"
+			echo \"[Icon Theme]\" > \"/home/$user_username/.local/share/icons/default/index.theme\"
+			echo \"Inherits=breeze_cursors\" >> \"/home/$user_username/.local/share/icons/default/index.theme\"
+			mkdir -p \"/home/$user_username/.icons/default\"
+			echo \"[Icon Theme]\" > \"/home/$user_username/.icons/default/index.theme\"
+			echo \"Inherits=breeze_cursors\" >> \"/home/$user_username/.icons/default/index.theme\"
+			sudo mkdir -p \"/usr/share/icons/default\"
+			echo \"[Icon Theme]\" > \"/usr/share/icons/default/index.theme\"
+			echo \"Inherits=breeze_cursors\" >> \"/usr/share/icons/default/index.theme\"
+			echo \"Xcursor.theme: breeze_cursors\" >> \"/home/$user_username/.Xresources\"
+			sed -i \"/^exec i3/i xrdb -merge ~/.Xresources\" \"/home/$user_username/.xinitrc\"
 		"
 }
 
