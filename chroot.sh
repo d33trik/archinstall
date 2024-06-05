@@ -149,7 +149,7 @@ setup_graphical_interface() {
 	gum spin \
 		--title="Setting up the graphical interface..." \
 		-- bash -c "
-			pacman -S --noconfirm xorg xorg-xinit i3-wm i3status i3lock arandr dmenu feh
+			pacman -S --noconfirm xorg xorg-xinit i3-wm i3status i3lock arandr dmenu feh arc-gtk-theme arc-icon-theme breeze
 			echo \"exec i3\" > /home/\"$user_username\"/.xinitrc
 			chown \"$user_username\":wheel /home/\"$user_username\"/.xinitrc
 			mkdir -p /etc/X11/xorg.conf.d
