@@ -13,7 +13,6 @@ nodejs,nodejs,custom,false
 obsidian,obsidian,custom,false
 remmina,remmina,pacman,false
 remmina,freerdp,pacman,false
-utils,breeze,custom,true
 utils,flameshot,pacman,true
 utils,htop,pacman,true
 utils,man,pacman,true
