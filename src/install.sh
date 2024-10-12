@@ -10,6 +10,7 @@ main() {
 	install_git
 	clone_archinstall_repository
 	install_gum
+	install_arch
 }
 
 synchronize_package_databases() {
@@ -44,6 +45,10 @@ install_gum() {
 	pacman -S --noconfirm --needed gum &> /dev/null
 	source archinstall/src/gum_options.sh
 	clear
+}
+
+install_arch() {
+	bash archinstall/src/install_arch.sh
 }
 
 main "$@"
