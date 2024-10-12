@@ -8,6 +8,7 @@ set -euo pipefail
 main() {
 	synchronize_package_databases
 	install_git
+	clone_archinstall_repository
 }
 
 synchronize_package_databases() {
@@ -23,6 +24,15 @@ install_git() {
 	echo "Installing git..."
 	sleep 1
 	pacman -S --noconfirm --needed git &> /dev/null
+	clear
+}
+
+clone_archinstall_repository() {
+	clear
+	echo "Cloning archinstall repository..."
+	sleep 1
+	rm -rf archinstall
+	git clone https://github.com/d33trik/archinstall.git &> /dev/null
 	clear
 }
 
