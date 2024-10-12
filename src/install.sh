@@ -6,7 +6,15 @@
 set -euo pipefail
 
 main() {
+	synchronize_package_databases
+}
 
+synchronize_package_databases() {
+	clear
+	echo "Synchronizing package databases..."
+	sleep 1
+	pacman -Sy &> /dev/null
+	clear
 }
 
 main "$@"
