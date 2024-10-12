@@ -9,6 +9,7 @@ main() {
 	synchronize_package_databases
 	install_git
 	clone_archinstall_repository
+	install_gum
 }
 
 synchronize_package_databases() {
@@ -33,6 +34,15 @@ clone_archinstall_repository() {
 	sleep 1
 	rm -rf archinstall
 	git clone https://github.com/d33trik/archinstall.git &> /dev/null
+	clear
+}
+
+install_gum() {
+	clear
+	echo "Installing gum..."
+	sleep 1
+	pacman -S --noconfirm --needed gum &> /dev/null
+	source archinstall/src/gum_options.sh
 	clear
 }
 
