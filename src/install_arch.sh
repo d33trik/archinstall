@@ -15,6 +15,7 @@ main() {
 	local user_username
 	local user_password
 	local user_password_confirmation
+	local hostname
 
 	display_welcome_message
 	select_keyboard_layout
@@ -29,6 +30,7 @@ main() {
 	get_user_password
 	get_user_password_confirmation
 	validate_user_password
+	get_hostname
 }
 
 display_welcome_message() {
@@ -164,6 +166,14 @@ validate_user_password() {
         get_user_password_confirmation
         validate_user_password
     fi
+}
+
+get_hostname() {
+    hostname=$(
+        gum input \
+            --header="Hostname" \
+            --placeholder="Enter a hostname for your system...."
+    )
 }
 
 main "$@"
