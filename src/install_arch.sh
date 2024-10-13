@@ -9,12 +9,17 @@ main() {
 	local keymap
 	local locale
 	local timezone
+	local root_password
+	local root_password_confirmation
 
 	display_welcome_message
 	select_keyboard_layout
 	setup_keyboard_layout
 	select_locale
 	select_timezone
+	get_root_password
+	get_root_password_confirmation
+	validate_root_password
 }
 
 display_welcome_message() {
@@ -80,6 +85,33 @@ select_timezone() {
 			--header="Timezone" \
 			--placeholder="Select your time zone..."
 	)
+}
+
+get_root_password() {
+	root_password=$(
+		gum input \
+			--password="true" \
+			--header="Root Password" \
+			--placeholder="Set a secure root password..."
+	)
+}
+
+get_root_password_confirmation() {
+	root_password_confirmation=$(
+		gum input \
+			--password="true" \
+			--header="Root Password Confirmation" \
+			--placeholder="Confirm your root password..."
+	)
+}
+
+validate_root_password() {
+	if [[ $root_password != $root_password_confirmation ]]; then
+		echo -e "$(gum style --bold --foreground="9" "ERROR:") Passwords do not match. Please try again."; sleep 2; clear
+		get_root_password
+		get_root_password_confirmation
+		validate_root_password
+	fi
 }
 
 main "$@"
