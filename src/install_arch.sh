@@ -7,10 +7,12 @@ set -euo pipefail
 
 main() {
 	local keymap
+	local locale
 
 	display_welcome_message
 	select_keyboard_layout
 	setup_keyboard_layout
+	select_locale
 }
 
 display_welcome_message() {
@@ -58,6 +60,15 @@ setup_keyboard_layout() {
 			sleep 1
 			loadkeys \"$keymap\"
 		"
+}
+
+select_locale() {
+	locale=$(
+		cat /usr/share/i18n/SUPPORTED |
+		gum filter \
+			--header="Locale" \
+			--placeholder="Select your preferred locale..."
+	)
 }
 
 main "$@"
