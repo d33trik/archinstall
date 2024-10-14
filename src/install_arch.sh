@@ -43,6 +43,7 @@ main() {
 	select_wipe_method
 	select_mirrorlist_country
 	display_isntallation_summary
+	update_system_clock
 }
 
 display_welcome_message() {
@@ -292,6 +293,15 @@ display_isntallation_summary() {
 		--affirmative="Yes, Install" \
 		--negative="No, Edit" \
 		"$prompt"
+}
+
+update_system_clock() {
+	gum spin \
+		--title="Updating system clock..." \
+		-- bash -c "
+			sleep 1
+			timedatectl set-ntp true
+		"
 }
 
 main "$@"
