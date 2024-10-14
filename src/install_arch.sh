@@ -22,6 +22,7 @@ main() {
 	local swap_size
 	local wipe_method
 	local mirrorlist_country
+	local mirrorlist_country_code
 
 	display_welcome_message
 	get_boot_mode
@@ -251,7 +252,7 @@ select_wipe_method() {
 }
 
 select_mirrorlist_country() {
-	local countries=$(cat "archinstall/src/mirrorlist_countries.txt")
+	local countries=$(awk -F, 'NR > 1 {print $1}' "archinstall/src/countries.csv")
 
 	mirrorlist_country=$(
 		echo "$countries" |
@@ -259,6 +260,8 @@ select_mirrorlist_country() {
 			--header="Pacman Mirrorlist" \
 			--placeholder="Select the region closest to your location..."
 	)
+
+	mirrorlist_country_code=$(grep "$mirrorlist_country" "archinstall/src/countries.csv" | awk -F, '{print $2}')
 }
 
 display_isntallation_summary() {
