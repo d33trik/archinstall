@@ -46,6 +46,7 @@ main() {
 	update_system_clock
 	wipe_block_device
 	partition_block_device
+	format_partitions
 }
 
 display_welcome_message() {
@@ -356,6 +357,19 @@ partition_block_device() {
 			w
 			EOF
 			partprobe \"$block_device\"
+		"
+}
+
+format_partitions() {
+	echo "$block_device" | grep -E 'nvme' &>/dev/null && block_device="${block_device}p"
+
+	gum spin \
+		--title="Formatting partitions..." \
+		-- bash -c "
+			sleep 1
+			[[ \"$boot_mode\" == 1 ]] && mkfs.fat -F32 \"${block_device}1\"
+			mkswap \"${block_device}2\"
+			mkfs.ext4 \"${block_device}3\"
 		"
 }
 
