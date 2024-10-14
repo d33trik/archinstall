@@ -45,6 +45,7 @@ main() {
 	display_isntallation_summary
 	update_system_clock
 	wipe_block_device
+	partition_block_device
 }
 
 display_welcome_message() {
@@ -328,6 +329,34 @@ wipe_block_device() {
 
 	sleep 1
 	clear
+}
+
+partition_block_device() {
+	gum spin \
+		--title="Partitioning block device $block_device..." \
+		-- bash -c "
+			sleep 1
+			partprobe \"$block_device\"
+			fdisk \"$block_device\" << EOF
+			g
+			n
+
+
+			+512M
+			t
+			$boot_partition_type
+			n
+
+
+			+${swap_size}G
+			n
+
+
+
+			w
+			EOF
+			partprobe \"$block_device\"
+		"
 }
 
 main "$@"
