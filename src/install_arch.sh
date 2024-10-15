@@ -52,6 +52,7 @@ main() {
 	uptate_pacman_mirrorlist
 	install_essential_packages
 	generate_fstab
+	copy_files_to_mnt
 }
 
 display_welcome_message() {
@@ -420,6 +421,15 @@ generate_fstab() {
 		-- bash -c "
 			sleep 1
 			genfstab -U /mnt >> /mnt/etc/fstab
+		"
+}
+
+copy_files_to_mnt() {
+	gum spin \
+		--title="Copying files to /mnt..." \
+		-- bash -c "
+			rm -rf /mnt/archinstall
+			cp -r archinstall /mnt/archinstall
 		"
 }
 
