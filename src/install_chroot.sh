@@ -16,6 +16,16 @@ main() {
 	local user_full_name=${8:?}
 	local user_password=${9:?}
 	local user_username=${10:?}
+
+	synchronize_package_databases
+}
+
+synchronize_package_databases() {
+	clear
+	echo "Synchronizing package databases..."
+	sleep 1
+	pacman -Sy &> /dev/null
+	clear
 }
 
 main "$@"
