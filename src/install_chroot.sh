@@ -23,6 +23,7 @@ main() {
 	set_up_user_account
 	set_up_timezone
 	set_up_localization
+	set_up_graphical_interface
 }
 
 synchronize_package_databases() {
@@ -84,6 +85,24 @@ set_up_localization() {
 			locale-gen
 			echo \"LANG=$locale_prefix\" > /etc/locale.conf
 			echo \"KEYMAP=$keymap\" >> /etc/vconsole.conf
+		"
+}
+
+set_up_graphical_interface() {
+	gum spin \
+		--title="Setting up the graphical interface..." \
+		-- bash -c "
+			pacman -S --noconfirm xorg xorg-xinit i3-wm i3status dmenu arandr ttf-dejavu arc-gtk-theme arc-icon-theme breeze
+			echo \"exec i3\" > /home/\"$user_username\"/.xinitrc
+			chown \"$user_username\":wheel /home/\"$user_username\"/.xinitrc
+			mkdir -p /etc/X11/xorg.conf.d
+			cat <<EOF > /etc/X11/xorg.conf.d/00-keyboard.conf
+Section \"InputClass\"
+	Identifier \"system-keyboard\"
+	MatchIsKeyboard \"on\"
+	Option \"XkbLayout\" \"$keymap\"
+EndSection
+EOF
 		"
 }
 
