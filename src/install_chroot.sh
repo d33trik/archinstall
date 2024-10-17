@@ -23,6 +23,7 @@ main() {
 	set_up_user_account
 	set_up_timezone
 	set_up_localization
+	set_up_graphical_interface
 }
 
 synchronize_package_databases() {
@@ -85,6 +86,25 @@ set_up_localization() {
 			echo \"LANG=$locale_prefix\" > /etc/locale.conf
 			echo \"KEYMAP=$keymap\" >> /etc/vconsole.conf
 		"
+}
+
+set_up_graphical_interface() {
+	# pacman -S --noconfirm xorg xorg-xinit i3-wm i3status dmenu arandr ttf-dejavu arc-gtk-theme arc-icon-theme breeze
+
+	gum spin \
+		--title="Setting up the graphical interface..." \
+		-- bash -c "
+			pacman -S --noconfirm xorg xorg-xinit i3-wm i3status dmenu arandr ttf-dejavu arc-gtk-theme arc-icon-theme breeze
+		"
+
+	# gum spin \
+	# 	--title="Setting up the graphical interface..." \
+	# 	-- bash -c "
+	# 		pacman -S --noconfirm xorg xorg-xinit i3-wm i3status dmenu arandr ttf-dejavu arc-gtk-theme arc-icon-theme breeze
+	# 		echo \"exec i3\" > /home/\"$user_username\"/.xinitrc
+	# 		chown \"$user_username\":wheel /home/\"$user_username\"/.xinitrc
+	# 		localectl --no-convert set-x11-keymap \"$keymap\"
+	# 	"
 }
 
 main "$@"
