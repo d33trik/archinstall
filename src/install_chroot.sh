@@ -26,6 +26,7 @@ main() {
 	set_up_graphical_interface
 	set_up_audio_interface
 	set_up_network_interface
+	create_new_initramfs
 }
 
 synchronize_package_databases() {
@@ -135,6 +136,14 @@ set_up_network_interface() {
 			systemctl start ufw.service
 			ufw enable
 		"
+}
+
+create_new_initramfs() {
+	gum spin \
+	--title="Creating new initramfs..." \
+	-- bash -c "
+		mkinitcpio -P
+	"
 }
 
 main "$@"
