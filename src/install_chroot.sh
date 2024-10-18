@@ -27,6 +27,7 @@ main() {
 	set_up_audio_interface
 	set_up_network_interface
 	create_new_initramfs
+	set_up_boot_loader
 }
 
 synchronize_package_databases() {
@@ -144,6 +145,21 @@ create_new_initramfs() {
 	-- bash -c "
 		mkinitcpio -P
 	"
+}
+
+set_up_boot_loader() {
+	gum spin \
+		--title="Setting up the boot loader..." \
+		-- bash -c "
+			if [ \"$boot_mode\" = 1 ]; then
+				pacman -S --noconfirm grub efibootmgr
+				grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot
+			else
+				pacman -S --noconfirm grub
+				grub-install \"$block_device\"
+			fi
+			grub-mkconfig -o /boot/grub/grub.cfg
+		"
 }
 
 main "$@"
