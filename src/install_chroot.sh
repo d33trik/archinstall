@@ -25,6 +25,7 @@ main() {
 	set_up_localization
 	set_up_graphical_interface
 	set_up_audio_interface
+	set_up_network_interface
 }
 
 synchronize_package_databases() {
@@ -120,6 +121,19 @@ set-default-sink echoCancel_sink
 EOF
 			pulseaudio -k
 			pulseaudio --start
+		"
+}
+
+set_up_network_interface() {
+	gum spin \
+		--title="Setting up the network interface..." \
+		-- bash -c "
+			echo \"$hostname\" > /etc/hostname
+			yes | pacman -S networkmanager iptables-nft ufw gufw
+			systemctl enable NetworkManager.service
+			systemctl enable ufw.service
+			systemctl start ufw.service
+			ufw enable
 		"
 }
 
