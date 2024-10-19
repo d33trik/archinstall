@@ -62,6 +62,14 @@ install_packages() {
 	fi
 }
 
+install_alacritty() {
+	gum spin \
+	--title="[$index/$total] Installing $package_name..." \
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed alacritty
+	"
+}
+
 disable_sudo_execution_without_password() {
 	gum spin \
 		--title="Disabling sudo execution without a password..." \
