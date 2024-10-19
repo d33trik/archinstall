@@ -12,6 +12,7 @@ main() {
 
 	enable_sudo_execution_without_password
 	install_yay
+	install_fonts
 }
 
 enable_sudo_execution_without_password() {
@@ -35,6 +36,14 @@ install_yay() {
 			makepkg --noconfirm -si
 			sudo pacman -Rs --noconfirm go
 		"
+}
+
+install_fonts() {
+	gum spin \
+	--title="Installing some fonts..." \
+	-- bash -c "
+		pacman -S --noconfirm --needed ttf-dejavu ttf-sourcecodepro-nerd
+	"
 }
 
 main "$@"
