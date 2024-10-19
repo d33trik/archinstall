@@ -13,6 +13,7 @@ main() {
 	enable_sudo_execution_without_password
 	install_yay
 	install_fonts
+	install_packages
 }
 
 enable_sudo_execution_without_password() {
@@ -44,6 +45,18 @@ install_fonts() {
 	-- bash -c "
 		pacman -S --noconfirm --needed ttf-dejavu ttf-sourcecodepro-nerd
 	"
+}
+
+install_packages() {
+	local packages_to_install=$(grep -E "$packages" "archinstall/src/packages.csv")
+	local total=$(echo "$packages_to_install" | wc -l)
+	local index=0
+
+	echo "$packages_to_install" | while read -r package; do
+		local package_name=$(echo "$package" | awk -F, {'print $1'})
+		index=$(( "$index" + 1 ))
+		install_$package_name
+	done
 }
 
 main "$@"
