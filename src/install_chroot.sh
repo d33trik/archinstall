@@ -9,14 +9,15 @@ main() {
 	local block_device=${1:?}
 	local boot_mode=${2:?}
 	local hostname=${3:?}
-	local keymap=${4:?}
-	local locale=${5:?}
-	local packages=${6:?}
-	local root_password=${7:?}
-	local timezone=${8:?}
-	local user_full_name=${9:?}
-	local user_password=${10:?}
-	local user_username=${11:?}
+	local install_dotfiles=${4:?}
+	local keymap=${5:?}
+	local locale=${6:?}
+	local packages=${7:?}
+	local root_password=${8:?}
+	local timezone=${9:?}
+	local user_full_name=${10:?}
+	local user_password=${11:?}
+	local user_username=${12:?}
 
 	synchronize_package_databases
 	install_gum

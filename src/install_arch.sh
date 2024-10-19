@@ -24,6 +24,7 @@ main() {
 	local mirrorlist_country
 	local mirrorlist_country_code
 	local packages
+	local install_dotfiles
 
 	display_welcome_message
 	get_boot_mode
@@ -45,6 +46,7 @@ main() {
 	select_wipe_method
 	select_mirrorlist_country
 	select_packages_to_install
+	get_install_dotfiles
 	display_isntallation_summary
 	update_system_clock
 	wipe_block_device
@@ -292,6 +294,16 @@ select_packages_to_install() {
 	)
 }
 
+get_install_dotfiles() {
+	install_dotfiles=$(
+		gum choose \
+			--header="Install dotfiles?" \
+			--height=4 \
+			--selected="No" \
+			"Yes" "No"
+	)
+}
+
 display_isntallation_summary() {
 	local prompt=$(
 		gum format \
@@ -318,6 +330,7 @@ display_isntallation_summary() {
 			"Whipe Method:         $wipe_method" \
 			"" \
 			"$(gum style --bold --foreground="10" "[Packages]")" \
+			"Install dotfiles?     $install_dotfiles" \
 			"$(gum style --width="65" "$(echo $packages | sed 's/ /, /g')")" |
 		gum style \
 			--border="normal" \
@@ -465,6 +478,7 @@ install_chroot() {
 	"$block_device" \
 	"$boot_mode" \
 	"$hostname" \
+	"$install_dotfiles" \
 	"$keymap" \
 	"$locale" \
 	"$packages" \
