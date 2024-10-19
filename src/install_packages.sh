@@ -132,6 +132,21 @@ install_neovim() {
 	"
 }
 
+install_obsidian() {
+	gum spin \
+	--title="[$index/$total] Installing $package_name..." \
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed fuse2
+		cd /tmp
+		curl -sLo obsidian.AppImage $(curl -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest | grep browser_download_url.*AppImage | grep -v "arm64" | cut -d\" -f4)
+		sudo mkdir /opt/obsidian
+		sudo mv obsidian.AppImage /opt/obsidian
+		sudo chmod +x /opt/obsidian/obsidian.AppImage
+		sudo ln -s /opt/obsidian/obsidian.AppImage /usr/bin/obsidian
+
+	"
+}
+
 disable_sudo_execution_without_password() {
 	gum spin \
 		--title="Disabling sudo execution without a password..." \
