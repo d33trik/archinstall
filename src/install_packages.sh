@@ -180,7 +180,15 @@ install_utils() {
 		poppler \
 		udiskie \
 		xcape \
-		zip unzip 
+		zip unzip
+	"
+}
+
+install_zathura() {
+	gum spin \
+	--title="[$index/$total] Installing $package_name..." \
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps
 	"
 }
 
