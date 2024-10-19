@@ -6,6 +6,7 @@ firefox,true
 gimp,false
 git,true
 klavaro,false
+libvirt,false
 neovim,true
 obsidian,false
 remmina,false

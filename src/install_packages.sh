@@ -124,6 +124,18 @@ install_klavaro() {
 	"
 }
 
+install_libvirt() {
+	gum spin \
+	--title="[$index/$total] Installing $package_name..." \
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed qemu-full libvirt virt-manager iptables-nft dnsmasq dmidecode edk2-ovmf
+		sudo gpasswd -a \"$user_username\" libvirt
+		sudo systemctl enable libvirtd.socket
+	"
+
+	echo firewall_backend=\"iptables\" >> /etc/libvirt/network.conf
+}
+
 install_neovim() {
 	gum spin \
 	--title="[$index/$total] Installing $package_name..." \
