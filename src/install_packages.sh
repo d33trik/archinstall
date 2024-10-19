@@ -43,8 +43,8 @@ install_yay() {
 install_fonts() {
 	gum spin \
 	--title="Installing some fonts..." \
-	-- bash -c "
-		pacman -S --noconfirm --needed ttf-dejavu ttf-sourcecodepro-nerd
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed ttf-dejavu ttf-sourcecodepro-nerd
 	"
 }
 
