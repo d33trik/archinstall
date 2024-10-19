@@ -70,6 +70,20 @@ install_alacritty() {
 	"
 }
 
+install_beekeeper-studio(){
+	gum spin \
+	--title="[$index/$total] Installing $package_name..." \
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed fuse2
+		cd /tmp
+		curl -sLo beekeeper-studio.AppImage $(curl -s https://api.github.com/repos/beekeeper-studio/beekeeper-studio/releases/latest | grep browser_download_url.*AppImage | grep -v "arm64" | cut -d\" -f4)
+		sudo mkdir /opt/beekeeper-studio
+		sudo mv beekeeper-studio.AppImage /opt/beekeeper-studio
+		sudo chmod +x /opt/beekeeper-studio/beekeeper-studio.AppImage
+		sudo ln -s /opt/beekeeper-studio/beekeeper-studio.AppImage /usr/bin/beekeeper-studio
+	"
+}
+
 disable_sudo_execution_without_password() {
 	gum spin \
 		--title="Disabling sudo execution without a password..." \
