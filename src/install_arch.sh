@@ -278,20 +278,25 @@ select_mirrorlist_country() {
 
 select_packages_to_install() {
 	local package_list=$(awk -F, 'NR > 1 {print $1}' "archinstall/src/packages.csv" | sort)
-	local pre_selected_packages_list=$(grep "true" "archinstall/src/packages.csv" | awk -F, '{print $1}' | sort)
 
-	local pre_selected_packages=()
-	for pre_selected_package in $pre_selected_packages_list; do
-		pre_selected_packages+=("--selected=$pre_selected_package")
-	done
+	if [[ -v package_list && -n ${package_list[*]} ]]; then
+		local pre_selected_packages_list=$(grep "true" "archinstall/src/packages.csv" | awk -F, '{print $1}' | sort)
 
-	packages=$(
-		echo "$package_list" |
-		gum choose \
-			--no-limit \
-			--header="Select the packages you want to install..." \
-			"${pre_selected_packages[@]}"
-	)
+		local pre_selected_packages=()
+		for pre_selected_package in $pre_selected_packages_list; do
+			pre_selected_packages+=("--selected=$pre_selected_package")
+		done
+
+		packages=$(
+			echo "$package_list" |
+			gum choose \
+				--no-limit \
+				--header="Select the packages you want to install..." \
+				"${pre_selected_packages[@]}"
+		)
+	fi
+
+	[[ ! -v packages ]] && packages=""
 }
 
 get_install_dotfiles() {

@@ -1,14 +1,1 @@
-Group,Pre Selected
-alacritty,true
-beekeeper-studio,false
-firefox,true
-gimp,false
-git,true
-klavaro,false
-neovim,true
-obsidian,false
-podman,true
-remmina,false
-utils,true
-virt-manager,false
-zathura,false
+Package,Selected

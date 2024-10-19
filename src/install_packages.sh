@@ -7,7 +7,7 @@ set -euo pipefail
 
 main() {
 	local install_dotfiles=${1:?}
-	local packages=${2:?}
+	local packages=${2}
 	local user_username=${3:?}
 
 	enable_sudo_execution_without_password
@@ -49,15 +49,17 @@ install_fonts() {
 }
 
 install_packages() {
-	local packages_to_install=$(grep -E "$packages" "archinstall/src/packages.csv")
-	local total=$(echo "$packages_to_install" | wc -l)
-	local index=0
+	if [[ -v packages && -n ${packages[*]} ]]; then
+		local packages_to_install=$(grep -E "$packages" "archinstall/src/packages.csv")
+		local total=$(echo "$packages_to_install" | wc -l)
+		local index=0
 
-	echo "$packages_to_install" | while read -r package; do
-		local package_name=$(echo "$package" | awk -F, {'print $1'})
-		index=$(( "$index" + 1 ))
-		install_$package_name
-	done
+		echo "$packages_to_install" | while read -r package; do
+			local package_name=$(echo "$package" | awk -F, {'print $1'})
+			index=$(( "$index" + 1 ))
+			install_$package_name
+		done
+	fi
 }
 
 disable_sudo_execution_without_password() {

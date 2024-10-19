@@ -12,7 +12,7 @@ main() {
 	local install_dotfiles=${4:?}
 	local keymap=${5:?}
 	local locale=${6:?}
-	local packages=${7:?}
+	local packages=${7}
 	local root_password=${8:?}
 	local timezone=${9:?}
 	local user_full_name=${10:?}
