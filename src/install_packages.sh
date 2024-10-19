@@ -6,7 +6,9 @@
 set -euo pipefail
 
 main() {
-	
+	local install_dotfiles=${1:?}
+	local packages=${2:?}
+	local user_username=${3:?}
 }
 
 main "$@"

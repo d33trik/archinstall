@@ -30,6 +30,7 @@ main() {
 	set_up_network_interface
 	create_new_initramfs
 	set_up_boot_loader
+	install_packages
 }
 
 synchronize_package_databases() {
@@ -162,6 +163,13 @@ set_up_boot_loader() {
 			fi
 			grub-mkconfig -o /boot/grub/grub.cfg
 		"
+}
+
+install_packages() {
+	bash archinstall/src/install_packages.sh \
+	"$install_dotfiles" \
+	"$packages" \
+	"$user_username"
 }
 
 main "$@"
