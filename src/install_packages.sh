@@ -11,6 +11,7 @@ main() {
 	local user_username=${3:?}
 
 	enable_sudo_execution_without_password
+	install_yay
 }
 
 enable_sudo_execution_without_password() {
@@ -20,6 +21,19 @@ enable_sudo_execution_without_password() {
 			sleep 1
 			sed -i '/^%wheel ALL=(ALL:ALL) ALL/s/^/# /' /etc/sudoers
 			sed -i '/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/s/^# //' /etc/sudoers
+		"
+}
+
+install_yay() {
+	gum spin \
+		--title="Installing yay..." \
+		-- sudo -u "$user_username" bash -c "
+			sudo pacman -S --noconfirm --needed git base-devel
+			cd /tmp
+			git clone https://aur.archlinux.org/yay.git
+			cd yay
+			makepkg --noconfirm -si
+			sudo pacman -Rs --noconfirm go
 		"
 }
 
