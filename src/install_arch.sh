@@ -23,6 +23,7 @@ main() {
 	local wipe_method
 	local mirrorlist_country
 	local mirrorlist_country_code
+	local packages
 
 	display_welcome_message
 	get_boot_mode
@@ -43,6 +44,7 @@ main() {
 	get_swap_size
 	select_wipe_method
 	select_mirrorlist_country
+	select_packages_to_install
 	display_isntallation_summary
 	update_system_clock
 	wipe_block_device
@@ -272,6 +274,24 @@ select_mirrorlist_country() {
 	mirrorlist_country_code=$(grep "$mirrorlist_country" "archinstall/src/countries.csv" | awk -F, '{print $2}')
 }
 
+select_packages_to_install() {
+	local package_list=$(awk -F, 'NR > 1 {print $1}' "archinstall/src/packages.csv" | sort)
+	local pre_selected_packages_list=$(grep "true" "archinstall/src/packages.csv" | awk -F, '{print $1}' | sort)
+
+	local pre_selected_packages=()
+	for pre_selected_package in $pre_selected_packages_list; do
+		pre_selected_packages+=("--selected=$pre_selected_package")
+	done
+
+	packages=$(
+		echo "$package_list" |
+		gum choose \
+			--no-limit \
+			--header="Select the packages you want to install..." \
+			"${pre_selected_packages[@]}"
+	)
+}
+
 display_isntallation_summary() {
 	local prompt=$(
 		gum format \
@@ -295,7 +315,10 @@ display_isntallation_summary() {
 			"$(gum style --bold --foreground="10" "[Instalation]")" \
 			"Block Device:         $block_device" \
 			"SWAP Size:            $swap_size GB" \
-			"Whipe Method:         $wipe_method" |
+			"Whipe Method:         $wipe_method" \
+			"" \
+			"$(gum style --bold --foreground="10" "[Packages]")" \
+			"$(gum style --width="65" "$(echo $packages | sed 's/ /, /g')")" |
 		gum style \
 			--border="normal" \
 			--margin="1" \
@@ -444,6 +467,7 @@ install_chroot() {
 	"$hostname" \
 	"$keymap" \
 	"$locale" \
+	"$packages" \
 	"$root_password" \
 	"$timezone" \
 	"$user_full_name" \

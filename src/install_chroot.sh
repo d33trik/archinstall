@@ -11,11 +11,12 @@ main() {
 	local hostname=${3:?}
 	local keymap=${4:?}
 	local locale=${5:?}
-	local root_password=${6:?}
-	local timezone=${7:?}
-	local user_full_name=${8:?}
-	local user_password=${9:?}
-	local user_username=${10:?}
+	local packages=${6:?}
+	local root_password=${7:?}
+	local timezone=${8:?}
+	local user_full_name=${9:?}
+	local user_password=${10:?}
+	local user_username=${11:?}
 
 	synchronize_package_databases
 	install_gum
