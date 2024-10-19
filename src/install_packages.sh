@@ -14,6 +14,7 @@ main() {
 	install_yay
 	install_fonts
 	install_packages
+	disable_sudo_execution_without_password
 }
 
 enable_sudo_execution_without_password() {
@@ -57,6 +58,16 @@ install_packages() {
 		index=$(( "$index" + 1 ))
 		install_$package_name
 	done
+}
+
+disable_sudo_execution_without_password() {
+	gum spin \
+		--title="Disabling sudo execution without a password..." \
+		-- bash -c "
+			sleep 1
+			sed -i '/^# %wheel ALL=(ALL:ALL) ALL/s/^# //' /etc/sudoers
+			sed -i '/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/s/^/# /' /etc/sudoers
+		"
 }
 
 main "$@"
