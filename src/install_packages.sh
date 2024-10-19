@@ -155,6 +155,23 @@ install_remmina() {
 	"
 }
 
+install_utils() {
+	gum spin \
+	--title="[$index/$total] Installing $package_name..." \
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed \
+		flameshot \
+		htop \
+		man man-pages \
+		neofetch \
+		openssh \
+		poppler \
+		udiskie \
+		xcape \
+		zip unzip 
+	"
+}
+
 disable_sudo_execution_without_password() {
 	gum spin \
 		--title="Disabling sudo execution without a password..." \
