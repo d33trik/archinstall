@@ -100,6 +100,15 @@ install_firefox() {
 	"
 }
 
+install_fish() {
+	gum spin \
+	--title="[$index/$total] Installing $package_name..." \
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed fish
+		sudo chsh -s /usr/bin/fish \"$user_username\"
+	"
+}
+
 install_gimp() {
 	gum spin \
 	--title="[$index/$total] Installing $package_name..." \

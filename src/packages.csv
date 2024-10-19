@@ -3,6 +3,7 @@ alacritty,true
 beekeeper-studio,false
 chromium,false
 firefox,true
+fish,true
 gimp,false
 git,true
 klavaro,false
