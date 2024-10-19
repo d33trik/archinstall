@@ -296,7 +296,9 @@ select_packages_to_install() {
 		)
 	fi
 
-	[[ ! -v packages ]] && packages=""
+	if [[ ! -v packages ]]; then
+		packages=""
+	fi
 }
 
 get_install_dotfiles() {
