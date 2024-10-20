@@ -14,6 +14,7 @@ main() {
 	install_yay
 	install_fonts
 	install_packages
+	install_dotfiles
 	disable_sudo_execution_without_password
 }
 
@@ -199,6 +200,20 @@ install_zathura() {
 	-- sudo -u "$user_username" bash -c "
 		sudo pacman -S --noconfirm --needed zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps
 	"
+}
+
+install_dotfiles() {
+	if [ "$install_dotfiles" = "Yes" ]; then
+		gum spin \
+			--title="Installing dotfiles..." \
+			-- sudo -u "$user_username" bash -c "
+				sudo pacman -S --noconfirm --needed git
+				git clone https://github.com/d33trik/dotfiles.git \"/home/$user_username/dotfiles\"
+				cd \"/home/$user_username/dotfiles\"
+				chmod u+x install.sh
+				bash install.sh
+			"
+	fi
 }
 
 disable_sudo_execution_without_password() {
