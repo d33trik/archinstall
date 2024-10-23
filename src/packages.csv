@@ -10,6 +10,7 @@ klavaro,false
 libvirt,false
 neovim,true
 obsidian,false
+podman,true
 remmina,false
 utils,true
 zathura,false

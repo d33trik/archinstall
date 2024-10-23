@@ -168,8 +168,19 @@ install_obsidian() {
 		sudo mv obsidian.AppImage /opt/obsidian
 		sudo chmod +x /opt/obsidian/obsidian.AppImage
 		sudo ln -s /opt/obsidian/obsidian.AppImage /usr/bin/obsidian
-
 	"
+}
+
+install_podman() {
+	gum spin \
+	--title="[$index/$total] Installing $package_name..." \
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed podman podman-compose
+		sudo systemctl enable podman-restart.service
+	"
+
+	rm /etc/containers/registries.conf.d/00-shortnames.conf
+	echo unqualified-search-registries = [\"docker.io\"] > /etc/containers/registries.conf.d/00-unqualified-search-registries.conf
 }
 
 install_remmina() {
