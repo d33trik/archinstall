@@ -8,13 +8,16 @@ set -euo pipefail
 main() {
 	local install_dotfiles=${1:?}
 	local packages=${2}
-	local user_username=${3:?}
+	local restore_vault_backup=${3:?}
+	local user_username=${4:?}
+	local vault_backup_device=${5}
 
 	enable_sudo_execution_without_password
 	install_yay
 	install_fonts
 	install_packages
 	install_dotfiles
+	restore_vault_backup
 	disable_sudo_execution_without_password
 }
 
@@ -212,6 +215,23 @@ install_dotfiles() {
 				cd \"/home/$user_username/dotfiles\"
 				chmod u+x install.sh
 				bash install.sh
+			"
+	fi
+}
+
+restore_vault_backup() {
+	if [ "$restore_vault_backup" = "Yes" ]; then
+		gum spin \
+			--title="Restoring vault backup..." \
+			-- sudo -u "$user_username" bash -c "
+				mkdir \"/home/$user_username/backup\"
+				sudo mount -o uid=$(id -u),gid=$(id -g),dmask=002,fmask=113 \"$vault_backup_device\" \"/home/$user_username/backup\"
+				cp \"/home/$user_username/backup/vault.tar.gz\" \"/home/$user_username\"
+				tar -xzf \"/home/$user_username/vault.tar.gz\" -C \"/home/$user_username\"
+				sudo umount \"$vault_backup_device\"
+				rm -rf \"/home/$user_username/backup\"
+				rm \"/home/$user_username/vault.tar.gz\"
+				bash \"/home/$user_username/vault/install.sh\"
 			"
 	fi
 }

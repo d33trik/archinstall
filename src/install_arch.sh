@@ -25,6 +25,8 @@ main() {
 	local mirrorlist_country_code
 	local packages
 	local install_dotfiles
+	local restore_vault_backup
+	local vault_backup_device
 
 	display_welcome_message
 	get_boot_mode
@@ -47,6 +49,8 @@ main() {
 	select_mirrorlist_country
 	select_packages_to_install
 	get_install_dotfiles
+	get_restore_vault_backup
+	select_vault_backup_device
 	display_isntallation_summary
 	update_system_clock
 	wipe_block_device
@@ -311,6 +315,40 @@ get_install_dotfiles() {
 	)
 }
 
+get_restore_vault_backup() {
+	restore_vault_backup=$(
+		gum choose \
+			--header="Restore vault backup?" \
+			--height=4 \
+			--selected="No" \
+			"Yes" "No"
+	)
+}
+
+select_vault_backup_device() {
+	if [ "$restore_vault_backup" = "Yes" ]; then
+		vault_backup_device=$(
+			lsblk \
+				--noheadings \
+				--paths \
+				--list \
+				--fs \
+				--output NAME,TYPE,FSTYPE,SIZE |
+			gum choose \
+				--header="Select the device containing the vault backup file..." \
+		)
+
+		vault_backup_device=$(
+			echo $vault_backup_device |
+			awk '{print $1}'
+		)
+	fi
+
+	if [[ ! -v vault_backup_device ]]; then
+		vault_backup_device=""
+	fi
+}
+
 display_isntallation_summary() {
 	local prompt=$(
 		gum format \
@@ -338,6 +376,7 @@ display_isntallation_summary() {
 			"" \
 			"$(gum style --bold --foreground="10" "[Packages]")" \
 			"Install dotfiles?     $install_dotfiles" \
+			"Restore vault backup? $restore_vault_backup" \
 			"$(gum style --width="65" "$(echo $packages | sed 's/ /, /g')")" |
 		gum style \
 			--border="normal" \
@@ -489,11 +528,13 @@ install_chroot() {
 	"$keymap" \
 	"$locale" \
 	"$packages" \
+	"$restore_vault_backup" \
 	"$root_password" \
 	"$timezone" \
 	"$user_full_name" \
 	"$user_password" \
-	"$user_username"
+	"$user_username" \
+	"$vault_backup_device"
 }
 
 clean_installation_files() {

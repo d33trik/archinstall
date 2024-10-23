@@ -13,11 +13,13 @@ main() {
 	local keymap=${5:?}
 	local locale=${6:?}
 	local packages=${7}
-	local root_password=${8:?}
-	local timezone=${9:?}
-	local user_full_name=${10:?}
-	local user_password=${11:?}
-	local user_username=${12:?}
+	local restore_vault_backup=${8:?}
+	local root_password=${9:?}
+	local timezone=${10:?}
+	local user_full_name=${11:?}
+	local user_password=${12:?}
+	local user_username=${13:?}
+	local vault_backup_device=${14}
 
 	synchronize_package_databases
 	install_gum
@@ -169,7 +171,9 @@ install_packages() {
 	bash archinstall/src/install_packages.sh \
 	"$install_dotfiles" \
 	"$packages" \
-	"$user_username"
+	"$restore_vault_backup" \
+	"$user_username" \
+	"$vault_backup_device"
 }
 
 main "$@"
