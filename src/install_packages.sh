@@ -188,7 +188,7 @@ install_utils() {
 		neofetch \
 		openssh \
 		poppler \
-		udiskie \
+		udiskie dosfstools exfatprogs ntfs-3g \
 		xcape \
 		zip unzip
 	"
