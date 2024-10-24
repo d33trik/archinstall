@@ -88,6 +88,15 @@ install_beekeeper-studio(){
 	"
 }
 
+install_bluetooth(){
+	gum spin \
+	--title="[$index/$total] Installing $package_name..." \
+	-- sudo -u "$user_username" bash -c "
+		sudo pacman -S --noconfirm --needed bluez bluez-utils
+		sudo systemctl enable bluetooth.service
+	"
+}
+
 install_chromium() {
 	gum spin \
 	--title="[$index/$total] Installing $package_name..." \

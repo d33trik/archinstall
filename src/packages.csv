@@ -1,6 +1,7 @@
 Package,Selected
 alacritty,true
 beekeeper-studio,false
+bluetooth, false
 chromium,false
 firefox,true
 fish,true
