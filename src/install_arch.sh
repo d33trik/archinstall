@@ -10,6 +10,7 @@ main() {
 
 	display_welcome_message
 	select_keyboard_layout
+	setup_keyboard_layout
 }
 
 display_welcome_message() {
@@ -48,6 +49,15 @@ select_keyboard_layout() {
 			--header="Keyboard Layout" \
 			--placeholder="Select your keyboard layout..."
 	)
+}
+
+setup_keyboard_layout() {
+	gum spin \
+		--title="Setting up the keyboard layout..." \
+		-- bash -c "
+			sleep 1
+			loadkeys \"$keymap\"
+		"
 }
 
 main "$@"
