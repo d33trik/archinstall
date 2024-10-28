@@ -24,6 +24,7 @@ main() {
 	set_up_timezone
 	set_up_localization
 	set_up_graphical_interface
+	set_up_audio_interface
 }
 
 synchronize_package_databases() {
@@ -103,6 +104,22 @@ Section \"InputClass\"
 	Option \"XkbLayout\" \"$keymap\"
 EndSection
 EOF
+		"
+}
+
+set_up_audio_interface() {
+	gum spin \
+		--title="Setting up the audio interface..." \
+		-- bash -c "
+			pacman -S --noconfirm pulseaudio pulseaudio-alsa pulseaudio-jack pavucontrol
+			cat <<EOF >> /etc/pulse/default.pa.d/noise-cancellation.pa
+### Enable Echo/Noise-Cancellation
+load-module module-echo-cancel use_master_format=1 aec_method=webrtc aec_args=\"analog_gain_control=0 digital_gain_control=1\" source_name=echoCancel_source sink_name=echoCancel_sink
+set-default-source echoCancel_source
+set-default-sink echoCancel_sink
+EOF
+			pulseaudio -k
+			pulseaudio --start
 		"
 }
 
