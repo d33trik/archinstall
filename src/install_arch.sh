@@ -54,6 +54,7 @@ main() {
 	generate_fstab
 	copy_files_to_mnt
 	install_chroot
+	clean_installation_files
 }
 
 display_welcome_message() {
@@ -446,6 +447,16 @@ install_chroot() {
 	"$user_full_name" \
 	"$user_password" \
 	"$user_username"
+}
+
+clean_installation_files() {
+	gum spin \
+		--title="Cleaning the installation files..." \
+		-- bash -c "
+			sleep 1
+			rm -rf /mnt/archinstall
+			umount -R /mnt
+		"
 }
 
 main "$@"
