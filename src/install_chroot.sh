@@ -22,6 +22,7 @@ main() {
 	set_up_root_password
 	set_up_user_account
 	set_up_timezone
+	set_up_localization
 }
 
 synchronize_package_databases() {
@@ -69,6 +70,20 @@ set_up_timezone() {
 			ln -sf /usr/share/zoneinfo/\"$timezone\" /etc/localtime
 			timedatectl set-ntp true
 			hwclock --systohc
+		"
+}
+
+set_up_localization() {
+	local locale_prefix=$(echo $locale | awk '{print $1}')
+
+	gum spin \
+		--title="Setting up the localization..." \
+		-- bash -c "
+			sleep 1
+			echo \"$locale\" >> /etc/locale.gen
+			locale-gen
+			echo \"LANG=$locale_prefix\" > /etc/locale.conf
+			echo \"KEYMAP=$keymap\" >> /etc/vconsole.conf
 		"
 }
 
