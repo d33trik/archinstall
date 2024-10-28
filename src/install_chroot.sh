@@ -19,6 +19,7 @@ main() {
 
 	synchronize_package_databases
 	install_gum
+	set_up_root_password
 }
 
 synchronize_package_databases() {
@@ -36,6 +37,15 @@ install_gum() {
 	pacman -S --noconfirm --needed gum &> /dev/null
 	source archinstall/src/gum_options.sh
 	clear
+}
+
+set_up_root_password() {
+	gum spin \
+		--title="Setting up the root password..." \
+		-- bash -c "
+			sleep 1
+			echo \"root:$root_password\" | chpasswd
+		"
 }
 
 main "$@"
