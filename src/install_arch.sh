@@ -6,7 +6,10 @@
 set -euo pipefail
 
 main() {
+	local keymap
+
 	display_welcome_message
+	select_keyboard_layout
 }
 
 display_welcome_message() {
@@ -36,6 +39,15 @@ display_welcome_message() {
 	gum confirm \
 		--default="false" \
 		"$prompt"
+}
+
+select_keyboard_layout() {
+	keymap=$(
+		localectl list-keymaps |
+		gum filter \
+			--header="Keyboard Layout" \
+			--placeholder="Select your keyboard layout..."
+	)
 }
 
 main "$@"
