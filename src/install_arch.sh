@@ -6,6 +6,8 @@
 set -euo pipefail
 
 main() {
+	local boot_mode
+	local boot_partition_type
 	local keymap
 	local locale
 	local timezone
@@ -22,6 +24,7 @@ main() {
 	local mirrorlist_country
 
 	display_welcome_message
+	get_boot_mode
 	select_keyboard_layout
 	setup_keyboard_layout
 	select_locale
@@ -68,6 +71,20 @@ display_welcome_message() {
 	gum confirm \
 		--default="false" \
 		"$prompt"
+}
+
+get_boot_mode() {
+	gum spin \
+		--title="Getting boot mode..." \
+		-- sleep 1
+
+	if cat /sys/firmware/efi/fw_platform_size &> /dev/null; then
+		boot_mode=1
+		boot_partition_type=1
+	else
+		boot_mode=0
+		boot_partition_type=4
+	fi
 }
 
 select_keyboard_layout() {
