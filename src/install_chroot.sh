@@ -18,6 +18,7 @@ main() {
 	local user_username=${10:?}
 
 	synchronize_package_databases
+	install_gum
 }
 
 synchronize_package_databases() {
@@ -25,6 +26,15 @@ synchronize_package_databases() {
 	echo "Synchronizing package databases..."
 	sleep 1
 	pacman -Sy &> /dev/null
+	clear
+}
+
+install_gum() {
+	clear
+	echo "Installing gum..."
+	sleep 1
+	pacman -S --noconfirm --needed gum &> /dev/null
+	source archinstall/src/gum_options.sh
 	clear
 }
 
