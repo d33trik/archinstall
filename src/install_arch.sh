@@ -51,6 +51,7 @@ main() {
 	mount_filesystems
 	uptate_pacman_mirrorlist
 	install_essential_packages
+	generate_fstab
 }
 
 display_welcome_message() {
@@ -411,6 +412,15 @@ install_essential_packages() {
 	pacstrap -K /mnt base base-devel linux linux-firmware
 	sleep 1
 	clear
+}
+
+generate_fstab() {
+	gum spin \
+		--title="Generating fstab..." \
+		-- bash -c "
+			sleep 1
+			genfstab -U /mnt >> /mnt/etc/fstab
+		"
 }
 
 main "$@"
