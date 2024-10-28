@@ -8,11 +8,13 @@ set -euo pipefail
 main() {
 	local keymap
 	local locale
+	local timezone
 
 	display_welcome_message
 	select_keyboard_layout
 	setup_keyboard_layout
 	select_locale
+	select_timezone
 }
 
 display_welcome_message() {
@@ -68,6 +70,15 @@ select_locale() {
 		gum filter \
 			--header="Locale" \
 			--placeholder="Select your preferred locale..."
+	)
+}
+
+select_timezone() {
+	timezone=$(
+		timedatectl list-timezones |
+		gum filter \
+			--header="Timezone" \
+			--placeholder="Select your time zone..."
 	)
 }
 
