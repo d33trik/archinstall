@@ -200,37 +200,37 @@ get_user_password_confirmation() {
 }
 
 validate_user_password() {
-    if [[ $user_password != $user_password_confirmation ]]; then
-        echo -e "$(gum style --bold --foreground="9" "ERROR:") Passwords do not match. Please try again."; sleep 2; clear
-        get_user_password
-        get_user_password_confirmation
-        validate_user_password
-    fi
+	if [[ $user_password != $user_password_confirmation ]]; then
+		echo -e "$(gum style --bold --foreground="9" "ERROR:") Passwords do not match. Please try again."; sleep 2; clear
+		get_user_password
+		get_user_password_confirmation
+		validate_user_password
+	fi
 }
 
 get_hostname() {
-    hostname=$(
-        gum input \
-            --header="Hostname" \
-            --placeholder="Enter a hostname for your system...."
-    )
+	hostname=$(
+		gum input \
+			--header="Hostname" \
+			--placeholder="Enter a hostname for your system...."
+	)
 }
 
 select_block_device() {
-    block_device=$(
-        lsblk \
-            --noheadings \
-            --nodeps \
-            --paths \
-            --output NAME,SIZE |
-        gum choose \
-            --header="Select the block device where you want to install the system..." \
-    )
+	block_device=$(
+		lsblk \
+			--noheadings \
+			--nodeps \
+			--paths \
+			--output NAME,SIZE |
+		gum choose \
+			--header="Select the block device where you want to install the system..." \
+	)
 
-     block_device=$(
-        echo $block_device |
-        awk '{print $1}'
-    )
+	block_device=$(
+		echo $block_device |
+		awk '{print $1}'
+	)
 }
 
 get_swap_size() {
