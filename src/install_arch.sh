@@ -53,6 +53,7 @@ main() {
 	install_essential_packages
 	generate_fstab
 	copy_files_to_mnt
+	install_chroot
 }
 
 display_welcome_message() {
@@ -431,6 +432,20 @@ copy_files_to_mnt() {
 			rm -rf /mnt/archinstall
 			cp -r archinstall /mnt/archinstall
 		"
+}
+
+install_chroot() {
+	arch-chroot /mnt bash archinstall/src/install_chroot.sh \
+	"$block_device" \
+	"$boot_mode" \
+	"$hostname" \
+	"$keymap" \
+	"$locale" \
+	"$root_password" \
+	"$timezone" \
+	"$user_full_name" \
+	"$user_password" \
+	"$user_username"
 }
 
 main "$@"
