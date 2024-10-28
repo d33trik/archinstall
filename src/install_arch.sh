@@ -55,6 +55,7 @@ main() {
 	copy_files_to_mnt
 	install_chroot
 	clean_installation_files
+	display_installation_completed_message
 }
 
 display_welcome_message() {
@@ -457,6 +458,35 @@ clean_installation_files() {
 			rm -rf /mnt/archinstall
 			umount -R /mnt
 		"
+}
+
+display_installation_completed_message() {
+	local prompt=$(
+		gum format \
+			--type="markdown" -- \
+			"$(gum style --bold --foreground="10" "Installation Complete!")" \
+			"" \
+			"Congratulations!" \
+			"" \
+			"You have successfully installed and configured Arch Linux" \
+			"based on the settings provided in this script." \
+			"" \
+			"Feel free to further customize your system as needed." \
+			"" \
+			"Thank you for using this installation script, and" \
+			"enjoy your new Arch Linux setup!" \
+			"" \
+			"Do you want to restart the system now?" |
+		gum style \
+			--border="normal" \
+			--margin="1" \
+			--padding="1 2" \
+			--border-foreground="7"
+	)
+
+	gum confirm \
+		--default="false" \
+		"$prompt"
 }
 
 main "$@"
