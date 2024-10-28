@@ -56,6 +56,7 @@ main() {
 	install_chroot
 	clean_installation_files
 	display_installation_completed_message
+	reboot_the_system
 }
 
 display_welcome_message() {
@@ -487,6 +488,10 @@ display_installation_completed_message() {
 	gum confirm \
 		--default="false" \
 		"$prompt"
+}
+
+reboot_the_system() {
+	reboot
 }
 
 main "$@"
