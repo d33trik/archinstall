@@ -11,6 +11,10 @@ main() {
 	local timezone
 	local root_password
 	local root_password_confirmation
+	local user_full_name
+	local user_username
+	local user_password
+	local user_password_confirmation
 
 	display_welcome_message
 	select_keyboard_layout
@@ -20,6 +24,11 @@ main() {
 	get_root_password
 	get_root_password_confirmation
 	validate_root_password
+	get_user_full_name
+	get_user_username
+	get_user_password
+	get_user_password_confirmation
+	validate_user_password
 }
 
 display_welcome_message() {
@@ -112,6 +121,49 @@ validate_root_password() {
 		get_root_password_confirmation
 		validate_root_password
 	fi
+}
+
+get_user_full_name() {
+	user_full_name=$(
+		gum input \
+			--header="User Full Name" \
+			--placeholder="Please enter your first and last name..."
+	)
+}
+
+get_user_username() {
+	user_username=$(
+		gum input \
+			--header="User Username" \
+			--placeholder="Create a username for your account...."
+	)
+}
+
+get_user_password() {
+	user_password=$(
+		gum input \
+			--password="true" \
+			--header="User Password" \
+			--placeholder="Set a secure password..."
+	)
+}
+
+get_user_password_confirmation() {
+	user_password_confirmation=$(
+		gum input \
+			--password="true" \
+			--header="User Password Confirmation" \
+			--placeholder="Confirm your password..."
+	)
+}
+
+validate_user_password() {
+    if [[ $user_password != $user_password_confirmation ]]; then
+        echo -e "$(gum style --bold --foreground="9" "ERROR:") Passwords do not match. Please try again."; sleep 2; clear
+        get_user_password
+        get_user_password_confirmation
+        validate_user_password
+    fi
 }
 
 main "$@"
