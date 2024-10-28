@@ -19,6 +19,7 @@ main() {
 	local block_device
 	local swap_size
 	local wipe_method
+	local mirrorlist_country
 
 	display_welcome_message
 	select_keyboard_layout
@@ -37,6 +38,7 @@ main() {
 	select_block_device
 	get_swap_size
 	select_wipe_method
+	select_mirrorlist_country
 }
 
 display_welcome_message() {
@@ -222,6 +224,17 @@ select_wipe_method() {
 		printf "%s\n" "${wipe_methods[@]}" |
 		gum choose \
 			--header="Select your preferred wipe method..."
+	)
+}
+
+select_mirrorlist_country() {
+	local countries=$(cat "archinstall/src/mirrorlist_countries.txt")
+
+	mirrorlist_country=$(
+		echo "$countries" |
+		gum filter \
+			--header="Pacman Mirrorlist" \
+			--placeholder="Select the region closest to your location..."
 	)
 }
 
