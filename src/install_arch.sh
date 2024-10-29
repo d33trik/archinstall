@@ -21,6 +21,7 @@ main() {
 	local block_device
 	local swap_size
 	local wipe_method
+	local graphical_interface
 	local mirrorlist_country
 	local mirrorlist_country_code
 
@@ -42,6 +43,7 @@ main() {
 	select_block_device
 	get_swap_size
 	select_wipe_method
+	select_graphical_interface
 	select_mirrorlist_country
 	display_isntallation_summary
 	update_system_clock
@@ -259,6 +261,18 @@ select_wipe_method() {
 	)
 }
 
+select_graphical_interface() {
+	local options=(
+		"i3"
+	)
+
+	graphical_interface=$(
+		printf "%s\n" "${options[@]}" |
+		gum choose \
+			--header="Select your preferred graphical interface..."
+	)
+}
+
 select_mirrorlist_country() {
 	local countries=$(awk -F, 'NR > 1 {print $1}' "archinstall/src/countries.csv")
 
@@ -290,6 +304,7 @@ display_isntallation_summary() {
 			"Timezone:             $timezone" \
 			"Keyboard Layout:      $keymap" \
 			"Hostname:             $hostname" \
+			"Graphical Interface:  $graphical_interface" \
 			"Mirrorlist Country:   $mirrorlist_country" \
 			"" \
 			"$(gum style --bold --foreground="10" "[Instalation]")" \
@@ -441,6 +456,7 @@ install_chroot() {
 	arch-chroot /mnt bash archinstall/src/install_chroot.sh \
 	"$block_device" \
 	"$boot_mode" \
+	"$graphical_interface" \
 	"$hostname" \
 	"$keymap" \
 	"$locale" \

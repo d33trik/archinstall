@@ -8,14 +8,15 @@ set -euo pipefail
 main() {
 	local block_device=${1:?}
 	local boot_mode=${2:?}
-	local hostname=${3:?}
-	local keymap=${4:?}
-	local locale=${5:?}
-	local root_password=${6:?}
-	local timezone=${7:?}
-	local user_full_name=${8:?}
-	local user_password=${9:?}
-	local user_username=${10:?}
+	local graphical_interface=${3:?}
+	local hostname=${4:?}
+	local keymap=${5:?}
+	local locale=${6:?}
+	local root_password=${7:?}
+	local timezone=${8:?}
+	local user_full_name=${9:?}
+	local user_password=${10:?}
+	local user_username=${11:?}
 
 	synchronize_package_databases
 	install_gum
@@ -97,17 +98,19 @@ set_up_graphical_interface() {
 	gum spin \
 		--title="Setting up the graphical interface..." \
 		-- bash -c "
-			pacman -S --noconfirm xorg xorg-xinit i3-wm i3status i3lock dmenu arandr
-			echo \"exec i3\" > /home/\"$user_username\"/.xinitrc
-			chown \"$user_username\":wheel /home/\"$user_username\"/.xinitrc
-			mkdir -p /etc/X11/xorg.conf.d
-			cat <<EOF > /etc/X11/xorg.conf.d/00-keyboard.conf
+			if [ \"$graphical_interface\" = \"i3\" ]; then
+				pacman -S --noconfirm xorg xorg-xinit i3-wm i3status i3lock dmenu arandr
+				echo \"exec i3\" > /home/\"$user_username\"/.xinitrc
+				chown \"$user_username\":wheel /home/\"$user_username\"/.xinitrc
+				mkdir -p /etc/X11/xorg.conf.d
+				cat <<EOF > /etc/X11/xorg.conf.d/00-keyboard.conf
 Section \"InputClass\"
 	Identifier \"system-keyboard\"
 	MatchIsKeyboard \"on\"
 	Option \"XkbLayout\" \"$keymap\"
 EndSection
 EOF
+			fi
 		"
 }
 
