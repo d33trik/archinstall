@@ -13,10 +13,11 @@ main() {
 	local keymap=${5:?}
 	local locale=${6:?}
 	local root_password=${7:?}
-	local timezone=${8:?}
-	local user_full_name=${9:?}
-	local user_password=${10:?}
-	local user_username=${11:?}
+	local sound_server=${8:?}
+	local timezone=${9:?}
+	local user_full_name=${10:?}
+	local user_password=${11:?}
+	local user_username=${12:?}
 
 	synchronize_package_databases
 	install_gum
@@ -25,7 +26,7 @@ main() {
 	set_up_timezone
 	set_up_localization
 	set_up_graphical_interface
-	set_up_audio_interface
+	set_up_sound_server
 	set_up_network_interface
 	install_yay
 	create_new_initramfs
@@ -114,19 +115,21 @@ EOF
 		"
 }
 
-set_up_audio_interface() {
+set_up_sound_server() {
 	gum spin \
-		--title="Setting up the audio interface..." \
+		--title="Setting up the sound server..." \
 		-- bash -c "
-			pacman -S --noconfirm pulseaudio pulseaudio-alsa pulseaudio-jack pavucontrol
-			cat <<EOF >> /etc/pulse/default.pa.d/noise-cancellation.pa
+			if [ \"$sound_server\" = \"PulseAudio\" ]; then
+				pacman -S --noconfirm pulseaudio pulseaudio-alsa pulseaudio-jack pavucontrol
+				cat <<EOF >> /etc/pulse/default.pa.d/noise-cancellation.pa
 ### Enable Echo/Noise-Cancellation
 load-module module-echo-cancel use_master_format=1 aec_method=webrtc aec_args=\"analog_gain_control=0 digital_gain_control=1\" source_name=echoCancel_source sink_name=echoCancel_sink
 set-default-source echoCancel_source
 set-default-sink echoCancel_sink
 EOF
-			pulseaudio -k
-			pulseaudio --start
+				pulseaudio -k
+				pulseaudio --start
+			fi
 		"
 }
 

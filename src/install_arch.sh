@@ -22,6 +22,7 @@ main() {
 	local swap_size
 	local wipe_method
 	local graphical_interface
+	local sound_server
 	local mirrorlist_country
 	local mirrorlist_country_code
 
@@ -44,6 +45,7 @@ main() {
 	get_swap_size
 	select_wipe_method
 	select_graphical_interface
+	select_sound_server
 	select_mirrorlist_country
 	display_isntallation_summary
 	update_system_clock
@@ -273,6 +275,18 @@ select_graphical_interface() {
 	)
 }
 
+select_sound_server() {
+	local options=(
+		"PulseAudio"
+	)
+
+	sound_server=$(
+		printf "%s\n" "${options[@]}" |
+		gum choose \
+			--header="Select your preferred sound server..."
+	)
+}
+
 select_mirrorlist_country() {
 	local countries=$(awk -F, 'NR > 1 {print $1}' "archinstall/src/countries.csv")
 
@@ -305,6 +319,7 @@ display_isntallation_summary() {
 			"Keyboard Layout:      $keymap" \
 			"Hostname:             $hostname" \
 			"Graphical Interface:  $graphical_interface" \
+			"Sound Server:         $sound_server"\
 			"Mirrorlist Country:   $mirrorlist_country" \
 			"" \
 			"$(gum style --bold --foreground="10" "[Instalation]")" \
@@ -461,6 +476,7 @@ install_chroot() {
 	"$keymap" \
 	"$locale" \
 	"$root_password" \
+	"$sound_server" \
 	"$timezone" \
 	"$user_full_name" \
 	"$user_password" \
