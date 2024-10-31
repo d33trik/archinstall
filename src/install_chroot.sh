@@ -28,7 +28,6 @@ main() {
 	set_up_graphical_interface
 	set_up_sound_server
 	set_up_network_interface
-	install_yay
 	create_new_initramfs
 	set_up_boot_loader
 }
@@ -144,25 +143,6 @@ set_up_network_interface() {
 			systemctl start ufw.service
 			ufw enable
 		"
-}
-
-install_yay() {
-	sed -i '/^%wheel ALL=(ALL:ALL) ALL/s/^/# /' /etc/sudoers
-	sed -i '/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/s/^# //' /etc/sudoers
-
-	gum spin \
-		--title="Installing yay..." \
-		-- sudo -u "$user_username" bash -c "
-			sudo pacman -S --noconfirm --needed git base-devel
-			cd /tmp
-			git clone https://aur.archlinux.org/yay.git
-			cd yay
-			makepkg --noconfirm -si
-			sudo pacman -Rs --noconfirm go
-		"
-
-	sed -i '/^# %wheel ALL=(ALL:ALL) ALL/s/^# //' /etc/sudoers
-	sed -i '/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/s/^/# /' /etc/sudoers
 }
 
 create_new_initramfs() {
