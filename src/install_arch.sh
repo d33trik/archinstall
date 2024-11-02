@@ -21,7 +21,6 @@ main() {
 	local block_device
 	local swap_size
 	local wipe_method
-	local graphical_interface
 	local sound_server
 	local mirrorlist_country
 	local mirrorlist_country_code
@@ -44,7 +43,6 @@ main() {
 	select_block_device
 	get_swap_size
 	select_wipe_method
-	select_graphical_interface
 	select_sound_server
 	select_mirrorlist_country
 	display_isntallation_summary
@@ -263,18 +261,6 @@ select_wipe_method() {
 	)
 }
 
-select_graphical_interface() {
-	local options=(
-		"i3"
-	)
-
-	graphical_interface=$(
-		printf "%s\n" "${options[@]}" |
-		gum choose \
-			--header="Select your preferred graphical interface..."
-	)
-}
-
 select_sound_server() {
 	local options=(
 		"PulseAudio"
@@ -318,7 +304,6 @@ display_isntallation_summary() {
 			"Timezone:             $timezone" \
 			"Keyboard Layout:      $keymap" \
 			"Hostname:             $hostname" \
-			"Graphical Interface:  $graphical_interface" \
 			"Sound Server:         $sound_server"\
 			"Mirrorlist Country:   $mirrorlist_country" \
 			"" \
@@ -471,7 +456,6 @@ install_chroot() {
 	arch-chroot /mnt bash archinstall/src/install_chroot.sh \
 	"$block_device" \
 	"$boot_mode" \
-	"$graphical_interface" \
 	"$hostname" \
 	"$keymap" \
 	"$locale" \
