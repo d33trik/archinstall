@@ -6,7 +6,11 @@
 set -euo pipefail
 
 main() {
+	synchronize_package_databases
+}
 
+synchronize_package_databases() {
+	pacman -Sy
 }
 
 main "$@"
