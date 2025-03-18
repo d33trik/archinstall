@@ -36,8 +36,12 @@ export GUM_SPIN_SPINNER_FOREGROUND=10
 export GUM_SPIN_TITLE_FOREGROUND=15
 
 main() {
+	local boot_mode
+	local boot_partition_type
+
 	synchronize_package_databases
 	install_gum
+	get_boot_mode
 }
 
 synchronize_package_databases() {
@@ -46,6 +50,16 @@ synchronize_package_databases() {
 
 install_gum() {
 	pacman -S --noconfirm --needed gum
+}
+
+get_boot_mode() {
+	if cat /sys/firmware/efi/fw_platform_size &> /dev/null; then
+		boot_mode=1
+		boot_partition_type=1
+	else
+		boot_mode=0
+		boot_partition_type=4
+	fi
 }
 
 main "$@"
