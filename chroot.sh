@@ -22,6 +22,7 @@ main() {
 	set_up_user_account
 	set_up_timezone
 	set_up_localization
+	set_up_network
 }
 
 synchronize_package_databases() {
@@ -50,6 +51,12 @@ set_up_localization() {
 	locale-gen
 	echo "LANG=$locale_prefix" > /etc/locale.conf
 	echo "KEYMAP=$keymap" >> /etc/vconsole.conf
+}
+
+set_up_network() {
+	echo "$hostname" > /etc/hostname
+	pacman -S --noconfirm networkmanager
+	systemctl enable NetworkManager.service
 }
 
 main "$@"
