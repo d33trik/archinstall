@@ -77,6 +77,7 @@ main() {
 	get_wipe_method
 	get_mirrorlist_country
 	display_isntallation_summary
+	update_system_clock
 }
 
 synchronize_package_databases() {
@@ -300,6 +301,10 @@ display_isntallation_summary() {
 		--affirmative="Yes, Install" \
 		--negative="No, Edit" \
 		"$prompt"
+}
+
+update_system_clock() {
+	timedatectl set-ntp true
 }
 
 main "$@"
