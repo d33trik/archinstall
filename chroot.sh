@@ -23,6 +23,7 @@ main() {
 	set_up_timezone
 	set_up_localization
 	set_up_network
+	create_new_initramfs
 }
 
 synchronize_package_databases() {
@@ -57,6 +58,10 @@ set_up_network() {
 	echo "$hostname" > /etc/hostname
 	pacman -S --noconfirm networkmanager
 	systemctl enable NetworkManager.service
+}
+
+create_new_initramfs() {
+	mkinitcpio -P
 }
 
 main "$@"
