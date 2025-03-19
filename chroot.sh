@@ -18,10 +18,15 @@ main() {
 	local user_username=${10:?}
 
 	synchronize_package_databases
+	set_up_root_password
 }
 
 synchronize_package_databases() {
 	pacman -Sy
+}
+
+set_up_root_password() {
+	echo "root:$root_password" | chpasswd
 }
 
 main "$@"
