@@ -86,6 +86,7 @@ main() {
 	install_base_packages
 	generate_fstab
 	run_chroot
+	clean_installation_files
 }
 
 synchronize_package_databases() {
@@ -412,6 +413,10 @@ run_chroot() {
 	"$user_full_name" \
 	"$user_password" \
 	"$user_username"
+}
+
+clean_installation_files() {
+	rm /mnt/chroot.sh
 }
 
 main "$@"
