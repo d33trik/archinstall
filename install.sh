@@ -50,6 +50,7 @@ main() {
 	local hostname
 	local block_device
 	local swap_size
+	local wipe_method
 
 	synchronize_package_databases
 	install_gum
@@ -69,6 +70,7 @@ main() {
 	get_hostname
 	get_block_device
 	get_swap_size
+	get_wipe_method
 }
 
 synchronize_package_databases() {
@@ -225,6 +227,20 @@ get_swap_size() {
 	)
 
 	[[ $swap_size =~ ^[0-9]+$ ]] || swap_size=$default_swap_size
+}
+
+get_wipe_method() {
+	local wipe_methods=(
+		"1 DD /dev/zero (Faster & Prevent Easy Recovery)"
+		"2 DD /dev/random (Slower & Prevent Hard Recovery)"
+		"3 No Need (The Device is Empty)"
+	)
+
+	wipe_method=$(
+		printf "%s\n" "${wipe_methods[@]}" |
+		gum choose \
+			--header="Select your preferred wipe method..."
+	)
 }
 
 main "$@"
