@@ -47,6 +47,7 @@ main() {
 	local user_username
 	local user_password
 	local user_password_confirmation
+	local hostname
 
 	synchronize_package_databases
 	install_gum
@@ -63,6 +64,7 @@ main() {
 	get_user_password
 	get_user_password_confirmation
 	validate_user_password
+	get_hostname
 }
 
 synchronize_package_databases() {
@@ -182,6 +184,14 @@ validate_user_password() {
 		get_user_password_confirmation
 		validate_user_password
 	fi
+}
+
+get_hostname() {
+	hostname=$(
+		gum input \
+			--header="Hostname" \
+			--placeholder="Enter a hostname for your system...."
+	)
 }
 
 main "$@"
