@@ -19,6 +19,7 @@ main() {
 
 	synchronize_package_databases
 	set_up_root_password
+	set_up_user_account
 }
 
 synchronize_package_databases() {
@@ -27,6 +28,12 @@ synchronize_package_databases() {
 
 set_up_root_password() {
 	echo "root:$root_password" | chpasswd
+}
+
+set_up_user_account() {
+	useradd -m -g wheel -s /bin/bash -c "$user_full_name" "$user_username"
+	echo "$user_username:$user_password" | chpasswd
+	sed -i '/^# %wheel ALL=(ALL:ALL) ALL/s/^# //' /etc/sudoers
 }
 
 main "$@"
