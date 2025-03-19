@@ -36,6 +36,8 @@ export GUM_SPIN_SPINNER_FOREGROUND=10
 export GUM_SPIN_TITLE_FOREGROUND=15
 
 main() {
+	local github_url="https://raw.githubusercontent.com/d33trik/archinstall/trunk"
+
 	local boot_mode
 	local boot_partition_type
 	local keymap
@@ -51,6 +53,8 @@ main() {
 	local block_device
 	local swap_size
 	local wipe_method
+	local mirrorlist_country
+	local mirrorlist_country_code
 
 	synchronize_package_databases
 	install_gum
@@ -71,6 +75,7 @@ main() {
 	get_block_device
 	get_swap_size
 	get_wipe_method
+	get_mirrorlist_country
 }
 
 synchronize_package_databases() {
@@ -241,6 +246,21 @@ get_wipe_method() {
 		gum choose \
 			--header="Select your preferred wipe method..."
 	)
+}
+
+get_mirrorlist_country() {
+	curl -LO "$github_url/mirrorlist_countries.csv"
+
+	local countries=$(awk -F, 'NR > 1 {print $1}' "mirrorlist_countries.csv")
+
+	mirrorlist_country=$(
+		echo "$countries" |
+		gum filter \
+			--header="Pacman Mirrorlist" \
+			--placeholder="Select the region closest to your location..."
+	)
+
+	mirrorlist_country_code=$(grep "$mirrorlist_country" "mirrorlist_countries.csv" | awk -F, '{print $2}')
 }
 
 main "$@"
