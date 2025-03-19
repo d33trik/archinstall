@@ -49,6 +49,7 @@ main() {
 	local user_password_confirmation
 	local hostname
 	local block_device
+	local swap_size
 
 	synchronize_package_databases
 	install_gum
@@ -67,6 +68,7 @@ main() {
 	validate_user_password
 	get_hostname
 	get_block_device
+	get_swap_size
 }
 
 synchronize_package_databases() {
@@ -211,6 +213,18 @@ get_block_device() {
 		echo $block_device |
 		awk '{print $1}'
 	)
+}
+
+get_swap_size() {
+	local default_swap_size=8
+
+	swap_size=$(
+		gum input \
+			--header="SWAP Size" \
+			--placeholder="Enter a value for the swap size, leave blank to default (8GB)..."
+	)
+
+	[[ $swap_size =~ ^[0-9]+$ ]] || swap_size=$default_swap_size
 }
 
 main "$@"
