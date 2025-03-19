@@ -80,6 +80,7 @@ main() {
 	update_system_clock
 	wipe_block_device
 	partition_block_device
+	format_partitions
 }
 
 synchronize_package_databases() {
@@ -355,6 +356,14 @@ n
 w
 EOF
 	partprobe "$block_device"
+}
+
+format_partitions() {
+	echo "$block_device" | grep -E 'nvme' &>/dev/null && block_device="${block_device}p"
+
+	[[ "$boot_mode" == 1 ]] && mkfs.fat -F32 "${block_device}1"
+	mkswap "${block_device}2"
+	mkfs.ext4 "${block_device}3"
 }
 
 main "$@"
