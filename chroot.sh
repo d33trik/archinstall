@@ -20,6 +20,7 @@ main() {
 	synchronize_package_databases
 	set_up_root_password
 	set_up_user_account
+	set_up_timezone
 }
 
 synchronize_package_databases() {
@@ -34,6 +35,12 @@ set_up_user_account() {
 	useradd -m -g wheel -s /bin/bash -c "$user_full_name" "$user_username"
 	echo "$user_username:$user_password" | chpasswd
 	sed -i '/^# %wheel ALL=(ALL:ALL) ALL/s/^# //' /etc/sudoers
+}
+
+set_up_timezone() {
+	ln -sf /usr/share/zoneinfo/"$timezone" /etc/localtime
+	timedatectl set-ntp true
+	hwclock --systohc
 }
 
 main "$@"
