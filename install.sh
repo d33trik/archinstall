@@ -41,6 +41,8 @@ main() {
 	local keymap
 	local locale
 	local timezone
+	local root_password
+	local root_password_confirmation
 
 	synchronize_package_databases
 	install_gum
@@ -49,6 +51,9 @@ main() {
 	set_keyboard_layout
 	get_locale
 	get_timezone
+	get_root_password
+	get_root_password_confirmation
+	validate_root_password
 }
 
 synchronize_package_databases() {
@@ -98,6 +103,33 @@ get_timezone() {
 			--header="Time Zone" \
 			--placeholder="Select your time zone..."
 	)
+}
+
+get_root_password() {
+	root_password=$(
+		gum input \
+			--password="true" \
+			--header="Root Password" \
+			--placeholder="Set a secure root password..."
+	)
+}
+
+get_root_password_confirmation() {
+	root_password_confirmation=$(
+		gum input \
+			--password="true" \
+			--header="Root Password Confirmation" \
+			--placeholder="Confirm your root password..."
+	)
+}
+
+validate_root_password() {
+	if [[ $root_password != $root_password_confirmation ]]; then
+		echo -e "$(gum style --bold --foreground="9" "ERROR:") Passwords do not match. Please try again."; sleep 2; clear
+		get_root_password
+		get_root_password_confirmation
+		validate_root_password
+	fi
 }
 
 main "$@"
