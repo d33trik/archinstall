@@ -39,12 +39,14 @@ main() {
 	local boot_mode
 	local boot_partition_type
 	local keymap
+	local locale
 
 	synchronize_package_databases
 	install_gum
 	get_boot_mode
 	get_keyboard_layout
 	set_keyboard_layout
+	get_locale
 }
 
 synchronize_package_databases() {
@@ -76,6 +78,15 @@ get_keyboard_layout() {
 
 set_keyboard_layout() {
 		loadkeys "$keymap"
+}
+
+get_locale() {
+	locale=$(
+		cat /usr/share/i18n/SUPPORTED |
+		gum filter \
+			--header="Locale" \
+			--placeholder="Select your preferred locale..."
+	)
 }
 
 main "$@"
