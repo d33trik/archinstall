@@ -82,6 +82,7 @@ main() {
 	partition_block_device
 	format_partitions
 	mount_filesystems
+	uptate_pacman_mirrorlist
 }
 
 synchronize_package_databases() {
@@ -371,6 +372,17 @@ mount_filesystems() {
 	mount "${block_device}3" /mnt
 	swapon "${block_device}2"
 	[[ "$boot_mode" == 1 ]] && mkdir -p /mnt/boot && mount "${block_device}"1 /mnt/boot
+}
+
+uptate_pacman_mirrorlist() {
+	local mirrorlist_url="https://archlinux.org/mirrorlist/?country=$mirrorlist_country_code&protocol=http&protocol=https&ip_version=4&use_mirror_status=on"
+
+	pacman -S --noconfirm pacman-contrib &&
+	curl -s "$mirrorlist_url" > /etc/pacman.d/mirrorlist.unranked &&
+	sed '/^##/d; /^[[:space:]]*$/d; s/^#Server/Server/' /etc/pacman.d/mirrorlist.unranked > /etc/pacman.d/mirrorlist.tmp &&
+	mv /etc/pacman.d/mirrorlist.tmp /etc/pacman.d/mirrorlist.unranked &&
+	rankmirrors -n 5 /etc/pacman.d/mirrorlist.unranked > /etc/pacman.d/mirrorlist &&
+	rm /etc/pacman.d/mirrorlist.unranked
 }
 
 main "$@"
