@@ -84,6 +84,7 @@ main() {
 	mount_filesystems
 	uptate_pacman_mirrorlist
 	install_base_packages
+	generate_fstab
 }
 
 synchronize_package_databases() {
@@ -388,6 +389,10 @@ uptate_pacman_mirrorlist() {
 
 install_base_packages() {
 	pacstrap -K /mnt base base-devel linux linux-firmware
+}
+
+generate_fstab() {
+	genfstab -U /mnt >> /mnt/etc/fstab
 }
 
 main "$@"
