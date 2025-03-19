@@ -24,6 +24,7 @@ main() {
 	set_up_localization
 	set_up_network
 	create_new_initramfs
+	set_up_boot_loader
 }
 
 synchronize_package_databases() {
@@ -62,6 +63,17 @@ set_up_network() {
 
 create_new_initramfs() {
 	mkinitcpio -P
+}
+
+set_up_boot_loader() {
+	if [ "$boot_mode" = 1 ]; then
+		pacman -S --noconfirm grub efibootmgr
+		grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot
+	else
+		pacman -S --noconfirm grub
+		grub-install "$block_device"
+	fi
+	grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 main "$@"
