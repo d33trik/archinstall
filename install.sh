@@ -40,6 +40,7 @@ main() {
 	local boot_partition_type
 	local keymap
 	local locale
+	local timezone
 
 	synchronize_package_databases
 	install_gum
@@ -47,6 +48,7 @@ main() {
 	get_keyboard_layout
 	set_keyboard_layout
 	get_locale
+	get_timezone
 }
 
 synchronize_package_databases() {
@@ -86,6 +88,15 @@ get_locale() {
 		gum filter \
 			--header="Locale" \
 			--placeholder="Select your preferred locale..."
+	)
+}
+
+get_timezone() {
+	timezone=$(
+		timedatectl list-timezones |
+		gum filter \
+			--header="Time Zone" \
+			--placeholder="Select your time zone..."
 	)
 }
 
