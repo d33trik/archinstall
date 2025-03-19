@@ -38,10 +38,12 @@ export GUM_SPIN_TITLE_FOREGROUND=15
 main() {
 	local boot_mode
 	local boot_partition_type
+	local keymap
 
 	synchronize_package_databases
 	install_gum
 	get_boot_mode
+	get_keyboard_layout
 }
 
 synchronize_package_databases() {
@@ -60,6 +62,15 @@ get_boot_mode() {
 		boot_mode=0
 		boot_partition_type=4
 	fi
+}
+
+get_keyboard_layout() {
+	keymap=$(
+		localectl list-keymaps |
+		gum filter \
+			--header="Keyboard Layout" \
+			--placeholder="Select your keyboard layout..."
+	)
 }
 
 main "$@"
