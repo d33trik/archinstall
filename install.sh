@@ -78,6 +78,7 @@ main() {
 	get_mirrorlist_country
 	display_isntallation_summary
 	update_system_clock
+	wipe_block_device
 }
 
 synchronize_package_databases() {
@@ -305,6 +306,31 @@ display_isntallation_summary() {
 
 update_system_clock() {
 	timedatectl set-ntp true
+}
+
+wipe_block_device() {
+	local block_device_size=$(sudo blockdev --getsize64 $block_device)
+	local wipe_method_code=$(
+		echo $wipe_method |
+		awk '{print $1}'
+	)
+
+	set +e
+	case $wipe_method_code in
+	1)
+		echo "$(gum style --foreground="15" "Wiping block device $block_device...")"
+		dd if=/dev/zero | pv --progress --timer --eta --size $block_device_size | dd of=$block_device &>/dev/null
+		;;
+	2)
+		echo "$(gum style --foreground="15" "Wiping block device $block_device...")"
+		dd if=/dev/random | pv --progress --timer --eta --size $block_device_size | dd of=$block_device &>/dev/null
+		;;
+	3) ;;
+	esac
+	set -e
+
+	sleep 1
+	clear
 }
 
 main "$@"
