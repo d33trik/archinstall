@@ -83,6 +83,7 @@ main() {
 	format_partitions
 	mount_filesystems
 	uptate_pacman_mirrorlist
+	install_base_packages
 }
 
 synchronize_package_databases() {
@@ -383,6 +384,10 @@ uptate_pacman_mirrorlist() {
 	mv /etc/pacman.d/mirrorlist.tmp /etc/pacman.d/mirrorlist.unranked &&
 	rankmirrors -n 5 /etc/pacman.d/mirrorlist.unranked > /etc/pacman.d/mirrorlist &&
 	rm /etc/pacman.d/mirrorlist.unranked
+}
+
+install_base_packages() {
+	pacstrap -K /mnt base base-devel linux linux-firmware
 }
 
 main "$@"
