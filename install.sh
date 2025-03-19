@@ -85,6 +85,7 @@ main() {
 	uptate_pacman_mirrorlist
 	install_base_packages
 	generate_fstab
+	run_chroot
 }
 
 synchronize_package_databases() {
@@ -393,6 +394,24 @@ install_base_packages() {
 
 generate_fstab() {
 	genfstab -U /mnt >> /mnt/etc/fstab
+}
+
+run_chroot() {
+	curl -LO "$github_url/chroot.sh"
+
+	cp chroot.sh /mnt
+
+	arch-chroot /mnt bash chroot.sh \
+	"$block_device" \
+	"$boot_mode" \
+	"$hostname" \
+	"$keymap" \
+	"$locale" \
+	"$root_password" \
+	"$timezone" \
+	"$user_full_name" \
+	"$user_password" \
+	"$user_username"
 }
 
 main "$@"
