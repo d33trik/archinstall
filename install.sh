@@ -44,6 +44,7 @@ main() {
 	install_gum
 	get_boot_mode
 	get_keyboard_layout
+	set_keyboard_layout
 }
 
 synchronize_package_databases() {
@@ -71,6 +72,10 @@ get_keyboard_layout() {
 			--header="Keyboard Layout" \
 			--placeholder="Select your keyboard layout..."
 	)
+}
+
+set_keyboard_layout() {
+		loadkeys "$keymap"
 }
 
 main "$@"
