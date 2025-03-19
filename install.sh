@@ -87,6 +87,7 @@ main() {
 	generate_fstab
 	run_chroot
 	clean_installation_files
+	reboot_the_system
 }
 
 synchronize_package_databases() {
@@ -417,6 +418,11 @@ run_chroot() {
 
 clean_installation_files() {
 	rm /mnt/chroot.sh
+}
+
+reboot_the_system() {
+	umount -R /mnt
+	reboot
 }
 
 main "$@"
