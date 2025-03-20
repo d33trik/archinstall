@@ -36,7 +36,7 @@ export GUM_SPIN_SPINNER_FOREGROUND=10
 export GUM_SPIN_TITLE_FOREGROUND=15
 
 main() {
-	local github_url="https://raw.githubusercontent.com/d33trik/archinstall/trunk"
+	local github_url="https://github.com/d33trik/archinstall.git"
 
 	local boot_mode
 	local boot_partition_type
@@ -59,6 +59,7 @@ main() {
 	synchronize_package_databases
 	install_git
 	install_gum
+	clone_repository
 	get_boot_mode
 	get_keyboard_layout
 	set_keyboard_layout
@@ -101,6 +102,10 @@ install_git() {
 
 install_gum() {
 	pacman -S --noconfirm --needed gum
+}
+
+clone_repository() {
+	git clone $github_url
 }
 
 get_boot_mode() {
@@ -266,9 +271,7 @@ get_wipe_method() {
 }
 
 get_mirrorlist_country() {
-	curl -LO "$github_url/mirrorlist_countries.csv"
-
-	local countries=$(awk -F, 'NR > 1 {print $1}' "mirrorlist_countries.csv")
+	local countries=$(awk -F, 'NR > 1 {print $1}' "archinstall/mirrorlist_countries.csv")
 
 	mirrorlist_country=$(
 		echo "$countries" |
@@ -277,7 +280,7 @@ get_mirrorlist_country() {
 			--placeholder="Select the region closest to your location..."
 	)
 
-	mirrorlist_country_code=$(grep "$mirrorlist_country" "mirrorlist_countries.csv" | awk -F, '{print $2}')
+	mirrorlist_country_code=$(grep "$mirrorlist_country" "archinstall/mirrorlist_countries.csv" | awk -F, '{print $2}')
 }
 
 display_isntallation_summary() {
@@ -404,11 +407,9 @@ generate_fstab() {
 }
 
 run_chroot() {
-	curl -LO "$github_url/chroot.sh"
+	cp -r archinstall /mnt/archinstall
 
-	cp chroot.sh /mnt
-
-	arch-chroot /mnt bash chroot.sh \
+	arch-chroot /mnt bash archinstall/chroot.sh \
 	"$block_device" \
 	"$boot_mode" \
 	"$hostname" \
@@ -422,7 +423,7 @@ run_chroot() {
 }
 
 clean_installation_files() {
-	rm /mnt/chroot.sh
+	rm -rf /mnt/archinstall
 }
 
 reboot_the_system() {
