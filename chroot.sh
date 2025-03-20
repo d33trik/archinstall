@@ -25,6 +25,7 @@ main() {
 	set_up_network
 	create_new_initramfs
 	set_up_boot_loader
+	enable_sudo_without_password
 	run_packages
 }
 
@@ -75,6 +76,11 @@ set_up_boot_loader() {
 		grub-install "$block_device"
 	fi
 	grub-mkconfig -o /boot/grub/grub.cfg
+}
+
+enable_sudo_without_password() {
+	sed -i '/^%wheel ALL=(ALL:ALL) ALL/s/^/# /' /etc/sudoers
+	sed -i '/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/s/^# //' /etc/sudoers
 }
 
 run_packages() {
