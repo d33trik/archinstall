@@ -25,6 +25,7 @@ main() {
 	set_up_network
 	create_new_initramfs
 	set_up_boot_loader
+	run_packages
 }
 
 synchronize_package_databases() {
@@ -74,6 +75,10 @@ set_up_boot_loader() {
 		grub-install "$block_device"
 	fi
 	grub-mkconfig -o /boot/grub/grub.cfg
+}
+
+run_packages() {
+	bash archinstall/packages.sh
 }
 
 main "$@"
