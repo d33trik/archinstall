@@ -1,0 +1,85 @@
+System:
+  Bluetooth:
+    - bluez
+    - bluez-utils
+  File System Tools:
+    - dosfstools
+    - exfatprogs
+    - ntfs-3g
+  Fonts:
+    - ttf-dejavu
+    - ttf-sourcecodepro-nerd
+  Graphical User Interface:
+    i3wm:
+      - xorg
+      - xorg-xinit
+      - xsettingsd
+      - i3-wm
+      - i3status
+      - i3lock
+      - dmenu
+      - arandr
+  Network:
+    Tools:
+      - openssh
+    Firewall:
+      - iptables-nft
+      - ufw
+      - gufw
+  Shell:
+    - fish
+  Soud:
+    PulseAudio:
+      - pulseaudio
+      - pulseaudio-alsa
+      - pulseaudio-jack
+      - pavucontrol
+  Themes:
+    - arc-gtk-theme
+    - arc-icon-theme
+    - rose-pine-cursor
+    - nwg-look
+
+Desktop Applications:
+  - alacritty
+  - brave-bin
+  - chromium
+  - flameshot
+  - gimp
+  - klavaro
+  - thunar
+
+Command Line Interface:
+  - fd
+  - gum
+  - htop
+  - man
+  - man-pages
+  - neofetch
+  - poppler
+  - ripgrep
+  - stow
+  - udiskie
+  - unzip
+  - xclip
+  - zathura
+  - zip
+
+Development:
+  Tools:
+    - beekeeper-studio-bin
+    - git
+    - neovim
+
+Virtualization:
+  Podman:
+    - podman
+    - podman-compose
+  Virt Manager:
+    - qemu-full
+    - libvirt
+    - virt-manager
+    - iptables-nft
+    - dnsmasq
+    - dmidecode
+    - edk2-ovmf
