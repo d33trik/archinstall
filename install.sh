@@ -271,7 +271,7 @@ get_wipe_method() {
 }
 
 get_mirrorlist_country() {
-	local countries=$(awk -F, 'NR > 1 {print $1}' "archinstall/mirrorlist_countries.csv")
+	local countries=$(awk -F, 'NR > 1 {print $1}' "archinstall/data/countries.csv")
 
 	mirrorlist_country=$(
 		echo "$countries" |
@@ -280,7 +280,7 @@ get_mirrorlist_country() {
 			--placeholder="Select the region closest to your location..."
 	)
 
-	mirrorlist_country_code=$(grep "$mirrorlist_country" "archinstall/mirrorlist_countries.csv" | awk -F, '{print $2}')
+	mirrorlist_country_code=$(grep "$mirrorlist_country" "archinstall/data/countries.csv" | awk -F, '{print $2}')
 }
 
 display_isntallation_summary() {
