@@ -57,6 +57,7 @@ main() {
 	local mirrorlist_country_code
 
 	synchronize_package_databases
+	install_git
 	install_gum
 	get_boot_mode
 	get_keyboard_layout
@@ -92,6 +93,10 @@ main() {
 
 synchronize_package_databases() {
 	pacman -Sy
+}
+
+install_git() {
+	pacman -S --noconfirm --needed git
 }
 
 install_gum() {
