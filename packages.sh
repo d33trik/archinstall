@@ -11,7 +11,7 @@ main() {
 }
 
 synchronize_package_databases() {
-	pacman -Sy
+	sudo pacman -Sy
 }
 
 install_yay() {

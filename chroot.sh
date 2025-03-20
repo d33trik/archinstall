@@ -78,7 +78,7 @@ set_up_boot_loader() {
 }
 
 run_packages() {
-	bash archinstall/packages.sh
+	sudo -u $user_username bash archinstall/packages.sh
 }
 
 main "$@"
