@@ -27,6 +27,7 @@ main() {
 	set_up_boot_loader
 	enable_sudo_without_password
 	run_packages
+	disable_sudo_without_password
 }
 
 synchronize_package_databases() {
@@ -85,6 +86,11 @@ enable_sudo_without_password() {
 
 run_packages() {
 	sudo -u $user_username bash archinstall/packages.sh
+}
+
+disable_sudo_without_password() {
+	sed -i '/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL/s/^/# /' /etc/sudoers
+	sed -i '/^# %wheel ALL=(ALL:ALL) ALL/s/^# //' /etc/sudoers
 }
 
 main "$@"
