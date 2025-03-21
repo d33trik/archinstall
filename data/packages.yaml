@@ -20,12 +20,7 @@ System:
       - dmenu
       - arandr
   Network:
-    Tools:
-      - openssh
-    Firewall:
-      - iptables-nft
-      - ufw
-      - gufw
+    - openssh
   Shell:
     - fish
   Soud:

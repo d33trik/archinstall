@@ -60,8 +60,11 @@ set_up_localization() {
 
 set_up_network() {
 	echo "$hostname" > /etc/hostname
-	pacman -S --noconfirm networkmanager
+	bash -c "yes | pacman -S networkmanager iptables-nft ufw gufw"
 	systemctl enable NetworkManager.service
+	systemctl enable ufw.service
+	systemctl start ufw.service
+	ufw enable
 }
 
 create_new_initramfs() {
