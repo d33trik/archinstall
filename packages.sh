@@ -15,6 +15,7 @@ main() {
 	set_up_firewall
 	set_up_podman
 	set_up_virt_manager
+	set_up_dotfiles
 }
 
 synchronize_package_databases() {
@@ -91,6 +92,15 @@ set_up_virt_manager() {
 	sudo systemctl enable libvirtd.socket
 	sudo rm -f /etc/libvirt/network.conf
 	echo 'firewall_backend="iptables"' | sudo tee -a /etc/libvirt/network.conf
+}
+
+set_up_dotfiles() {
+	cd /home/"$(whoami)"
+	rm -rf dotfiles
+	git clone https://github.com/d33trik/dotfiles.git
+	cd dotfiles
+	git remote set-url origin git@github.com:d33trik/dotfiles.git
+	stow .
 }
 
 main "$@"
