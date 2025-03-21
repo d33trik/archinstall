@@ -52,7 +52,7 @@ install_packages() {
 }
 
 set_up_fish() {
-	chsh -s /usr/bin/fish
+	sudo chsh -s /usr/bin/fish $(whoami)
 }
 
 set_up_bluetooth() {
