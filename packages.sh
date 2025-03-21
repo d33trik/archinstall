@@ -12,7 +12,6 @@ main() {
 	set_up_fish
 	set_up_bluetooth
 	set_up_pulse_audio
-	set_up_firewall
 	set_up_podman
 	set_up_virt_manager
 	set_up_dotfiles
@@ -72,12 +71,6 @@ set-default-sink echoCancel_sink
 EOF
 	pulseaudio -k
 	pulseaudio --start
-}
-
-set_up_firewall() {
-	sudo systemctl enable ufw.service
-	sudo systemctl start ufw.service
-	sudo ufw enable
 }
 
 set_up_podman() {
