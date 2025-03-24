@@ -7,6 +7,7 @@ System:
     - exfatprogs
     - ntfs-3g
   Fonts:
+    - noto-fonts-emoji
     - ttf-dejavu
     - ttf-sourcecodepro-nerd
   Graphical User Interface:
