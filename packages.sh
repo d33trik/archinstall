@@ -84,12 +84,13 @@ set_up_virt_manager() {
 }
 
 set_up_dotfiles() {
-	cd /home/"$(whoami)"
-	rm -rf dotfiles
-	git clone https://github.com/d33trik/dotfiles.git
-	cd dotfiles
-	git remote set-url origin git@github.com:d33trik/dotfiles.git
-	stow .
+	if [ ! -d "$HOME/dotfiles" ]; then
+		cd "$HOME"
+		git clone https://github.com/d33trik/dotfiles.git
+		cd dotfiles
+		git remote set-url origin git@github.com:d33trik/dotfiles.git
+		stow .
+	fi
 }
 
 main "$@"
