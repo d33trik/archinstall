@@ -47,18 +47,15 @@ Desktop Applications:
   - thunar
 
 Command Line Interface:
-  - fd
   - gum
   - htop
   - man
   - man-pages
   - neofetch
   - poppler
-  - ripgrep
   - stow
   - udiskie
   - unzip
-  - xclip
   - zathura
   - zip
 
@@ -66,7 +63,16 @@ Development:
   Tools:
     - beekeeper-studio-bin
     - git
+  Neovim:
     - neovim
+    - gcc
+    - make
+    - git
+    - luarocks
+    - ripgrep
+    - fd
+    - unzip
+    - xclip
 
 Virtualization:
   Podman:
