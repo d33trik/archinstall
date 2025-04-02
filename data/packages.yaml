@@ -73,6 +73,8 @@ Development:
     - fd
     - unzip
     - xclip
+  Go:
+    - go
 
 Virtualization:
   Podman:
