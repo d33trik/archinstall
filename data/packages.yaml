@@ -29,6 +29,7 @@ System:
     PulseAudio:
       - pulseaudio
       - pulseaudio-alsa
+      - pulseaudio-bluetooth
       - pulseaudio-jack
       - pavucontrol
   Themes:
