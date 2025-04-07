@@ -33,6 +33,7 @@ System:
     - alacritty
     - fish
     - starship
+    - tmux
   Themes:
     - arc-gtk-theme
     - arc-icon-theme

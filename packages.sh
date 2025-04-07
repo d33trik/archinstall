@@ -10,6 +10,7 @@ main() {
 	install_yay
 	install_packages
 	set_up_fish
+	set_up_tmux
 	set_up_bluetooth
 	set_up_pulse_audio
 	set_up_podman
@@ -53,6 +54,12 @@ install_packages() {
 
 set_up_fish() {
 	sudo chsh -s /usr/bin/fish $(whoami)
+}
+
+set_up_tmux() {
+	if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+		git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+	fi
 }
 
 set_up_bluetooth() {
