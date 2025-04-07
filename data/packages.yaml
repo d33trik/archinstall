@@ -22,9 +22,6 @@ System:
       - arandr
   Network:
     - openssh
-  Shell:
-    - fish
-    - starship
   Soud:
     PulseAudio:
       - pulseaudio
@@ -32,6 +29,10 @@ System:
       - pulseaudio-bluetooth
       - pulseaudio-jack
       - pavucontrol
+  Terminal:
+    - alacritty
+    - fish
+    - starship
   Themes:
     - arc-gtk-theme
     - arc-icon-theme
@@ -39,7 +40,6 @@ System:
     - nwg-look
 
 Desktop Applications:
-  - alacritty
   - brave-bin
   - chromium
   - flameshot
