@@ -7,103 +7,24 @@ set -euo pipefail
 
 main() {
 	synchronize_package_databases
-	install_yay
+	install_git
 	install_packages
-	set_up_fish
-	set_up_tmux
-	set_up_bluetooth
-	set_up_pulse_audio
-	set_up_podman
-	set_up_virt_manager
-	set_up_dotfiles
 }
 
 synchronize_package_databases() {
 	sudo pacman -Sy
 }
 
-install_yay() {
-	if ! command -v yay &>/dev/null; then
-		local working_directory=$(pwd)
-		sudo pacman -S --noconfirm --needed git base-devel
-		rm -rf /tmp/yay
-		git clone https://aur.archlinux.org/yay.git /tmp/yay
-		cd /tmp/yay
-		makepkg --noconfirm -si
-		sudo pacman -Rs --noconfirm go
-		cd "$working_directory"
-	fi
+install_git(){
+	sudo pacman -S --noconfirm --needed git
 }
 
 install_packages() {
-	local packages
-	if [ -f "data/packages.yaml" ]; then
-			packages="data/packages.yaml"
-	else
-			packages="archinstall/data/packages.yaml"
-	fi
-
-	awk '/^ *- / {print $2}' "$packages" | while IFS= read -r package; do
-		# Skip empty lines and comments
-		[[ -z "$package" || "$package" == \#* ]] && continue
-
-		# Install package
-		yay -S --noconfirm --needed "$package"
-	done
-}
-
-set_up_fish() {
-	sudo chsh -s /usr/bin/fish $(whoami)
-}
-
-set_up_tmux() {
-	if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-		git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
-	fi
-}
-
-set_up_bluetooth() {
-	sudo systemctl enable bluetooth.service
-	sudo systemctl start bluetooth.service
-}
-
-set_up_pulse_audio() {
-	sudo gpasswd -a $(whoami) audio
-	sudo gpasswd -a $(whoami) lp
-	sudo rm -f /etc/pulse/default.pa.d/noise-cancellation.pa
-	echo '### Enable Echo/Noise-Cancellation
-load-module module-echo-cancel use_master_format=1 aec_method=webrtc aec_args="analog_gain_control=0 digital_gain_control=1" source_name=echoCancel_source sink_name=echoCancel_sink
-set-default-source echoCancel_source
-set-default-sink echoCancel_sink' | sudo tee -a /etc/pulse/default.pa.d/noise-cancellation.pa
-	sudo rm -f /etc/pulse/system.pa.d/bluetooth.pa
-	echo '### Load Bluetooth Modules
-load-module module-bluetooth-policy
-load-module module-bluetooth-discover
-load-module module-switch-on-connect' | sudo tee -a /etc/pulse/system.pa.d/bluetooth.pa
-}
-
-set_up_podman() {
-	sudo systemctl enable podman-restart.service
-	sudo rm -f /etc/containers/registries.conf.d/00-shortnames.conf
-	sudo rm -f /etc/containers/registries.conf.d/00-unqualified-search-registries.conf
-	echo 'unqualified-search-registries = ["docker.io"]' | sudo tee -a /etc/containers/registries.conf.d/00-unqualified-search-registries.conf
-}
-
-set_up_virt_manager() {
-	sudo gpasswd -a $(whoami) libvirt
-	sudo systemctl enable libvirtd.socket
-	sudo rm -f /etc/libvirt/network.conf
-	echo 'firewall_backend="iptables"' | sudo tee -a /etc/libvirt/network.conf
-}
-
-set_up_dotfiles() {
-	if [ ! -d "$HOME/dotfiles" ]; then
-		cd "$HOME"
-		git clone https://github.com/d33trik/dotfiles.git
-		cd dotfiles
-		git remote set-url origin git@github.com:d33trik/dotfiles.git
-		stow .
-	fi
+	cd "$HOME"
+	git clone https://github.com/d33trik/dotfiles.git
+	cd dotfiles
+	git remote set-url origin git@github.com:d33trik/dotfiles.git
+	bash packages/install.sh
 }
 
 main "$@"
