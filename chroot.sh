@@ -23,6 +23,7 @@ main() {
 	set_up_timezone
 	set_up_localization
 	set_up_network
+	set_up_keyboard
 	create_new_initramfs
 	set_up_boot_loader
 	enable_sudo_without_password
@@ -52,19 +53,23 @@ set_up_timezone() {
 
 set_up_localization() {
 	local locale_prefix=$(echo $locale | awk '{print $1}')
-	echo "$locale" >> /etc/locale.gen
+	echo "$locale" >>/etc/locale.gen
 	locale-gen
-	echo "LANG=$locale_prefix" > /etc/locale.conf
-	echo "KEYMAP=$keymap" >> /etc/vconsole.conf
+	echo "LANG=$locale_prefix" >/etc/locale.conf
+	echo "KEYMAP=$keymap" >>/etc/vconsole.conf
 }
 
 set_up_network() {
-	echo "$hostname" > /etc/hostname
+	echo "$hostname" >/etc/hostname
 	bash -c "yes | pacman -S networkmanager iptables-nft ufw gufw"
 	systemctl enable NetworkManager.service
 	systemctl enable ufw.service
 	systemctl start ufw.service
 	ufw enable
+}
+
+set_up_keyboard() {
+	cp archinstall/data/50-qmk.rules /etc/udev/rules.d/50-qmk.rules
 }
 
 create_new_initramfs() {
