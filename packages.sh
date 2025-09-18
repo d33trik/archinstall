@@ -15,7 +15,7 @@ synchronize_package_databases() {
 	sudo pacman -Sy
 }
 
-install_git(){
+install_git() {
 	sudo pacman -S --noconfirm --needed git
 }
 
@@ -24,7 +24,7 @@ install_packages() {
 	git clone https://github.com/d33trik/dotfiles.git
 	cd dotfiles
 	git remote set-url origin git@github.com:d33trik/dotfiles.git
-	bash packages/install.sh
+	bash scripts/install_packages.sh
 }
 
 main "$@"
