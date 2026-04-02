@@ -36,7 +36,7 @@ export GUM_SPIN_SPINNER_FOREGROUND=10
 export GUM_SPIN_TITLE_FOREGROUND=15
 
 main() {
-	local github_url="https://github.com/d33trik/archinstall.git"
+	local repository_url="https://codeberg.org/d33trik/archinstall.git"
 
 	local boot_mode
 	local boot_partition_type
@@ -105,7 +105,7 @@ install_gum() {
 }
 
 clone_repository() {
-	git clone $github_url
+	git clone $repository_url
 }
 
 get_boot_mode() {

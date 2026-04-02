@@ -9,7 +9,7 @@ This is a set of bash scripts to automate the installation of Arch Linux.
 3. Download the installation script:
 
  ```bash
- curl -LO https://raw.githubusercontent.com/d33trik/archinstall/trunk/install.sh
+ curl -LO https://codeberg.org/d33trik/archinstall/raw/branch/trunk/install.sh
  ```
 
 4. Run the installer:

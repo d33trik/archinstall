@@ -21,9 +21,9 @@ install_git() {
 
 install_packages() {
 	cd "$HOME"
-	git clone https://github.com/d33trik/dotfiles.git
+	git clone https://codeberg.org/d33trik/dotfiles.git
 	cd dotfiles
-	git remote set-url origin git@github.com:d33trik/dotfiles.git
+	git remote set-url origin git@codeberg.org/d33trik/dotfiles.git
 	bash scripts/install_packages.sh
 }
 
